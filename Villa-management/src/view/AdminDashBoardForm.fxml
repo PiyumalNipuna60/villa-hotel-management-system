@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="705.0" prefWidth="1202.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashBoardFormController">
+   <children>
+      <Pane layoutX="15.0" layoutY="12.0" prefHeight="677.0" prefWidth="234.0" style="-fx-background-color: #dff9fb; -fx-border-radius: 15px; -fx-background-radius: 15;">
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" height="70.18" radius="32.837500000000006" spread="0.17" width="63.17" />
+         </effect>
+         <children>
+            <Label layoutX="55.0" layoutY="22.0" prefHeight="70.0" prefWidth="112.0" text="Admin" underline="true">
+               <font>
+                  <Font name="System Bold Italic" size="33.0" />
+               </font>
+               <effect>
+                  <Shadow blurType="GAUSSIAN" height="1.0" radius="0.0" width="0.0" />
+               </effect>
+            </Label>
+            <Pane layoutX="14.0" layoutY="185.0" onDragDetected="#btnCustomerOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnCustomerOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/user.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnCustomerOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Customer" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="231.0" onDragDetected="#btnEmployeeOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnEmployeeOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/teamwork.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="43.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnEmployeeOnAction" prefHeight="35.0" prefWidth="157.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Employee" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="277.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnRoomOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/bed.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnRoomOnAction" onDragDetected="#btnRoomOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Room" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="15.0" layoutY="322.0" onDragDetected="#btnDriverOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnDriverOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/driver.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnDriverOnAction" prefHeight="35.0" prefWidth="157.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Driver" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="15.0" layoutY="368.0" onDragDetected="#btnSafaryOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnSafaryOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/suv.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnSafaryOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage safary" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="15.0" layoutY="414.0" onDragDetected="#btnMeelPlanOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnMeelPlanOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/diet.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnMeelPlanOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Meal plan" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="620.0" onDragDetected="#btnExitPlanOnAction" prefHeight="44.0" prefWidth="94.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnExitPlanOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/logout.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnExitPlanOnAction" prefHeight="35.0" prefWidth="45.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Exit" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane layoutX="256.0" layoutY="13.0" prefHeight="678.0" prefWidth="937.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
+         </effect>
+         <children>
+            <Pane layoutX="27.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
+               </effect>
+               <children>
+                  <Label layoutX="46.0" layoutY="33.0" text="Totale Customer">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbltotalCustomer" layoutX="73.0" layoutY="59.0" text="01" textFill="#2105e8">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="259.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
+               </effect>
+               <children>
+                  <Label layoutX="53.0" layoutY="26.0" text="Safary Count">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblSafaryCount" layoutX="70.0" layoutY="52.0" text="01" textFill="#2105e8">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="489.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
+               </effect>
+               <children>
+                  <Label layoutX="45.0" layoutY="24.0" text="Available Room">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAvailableRoom" layoutX="72.0" layoutY="50.0" text="01" textFill="#2105e8">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="719.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
+               </effect>
+               <children>
+                  <Label layoutX="45.0" layoutY="27.0" text="Available Driver">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblAvailableDriver" layoutX="68.0" layoutY="53.0" text="01" textFill="#2105e8">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Label fx:id="lbtDate" layoutX="27.0" layoutY="24.0" prefHeight="43.0" prefWidth="175.0" text="2023:12:05">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTime" layoutX="829.0" layoutY="24.0" prefHeight="43.0" prefWidth="81.0" text="12.30">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <Separator layoutX="23.0" layoutY="77.0" prefHeight="4.0" prefWidth="894.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
