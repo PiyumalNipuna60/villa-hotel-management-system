@@ -161,7 +161,53 @@ public class CustomerFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        String Id = txtCusId.getText();
+        String name = txtCusName.getText();
+        String address = txtCusAddress.getText();
+        LocalDate dob = txtDob.getValue();
+        String nic = txtCusNic.getText();
+        String contact = txtContact.getText();
+        String gender;
+        Object safaryId = cmbSafaryid.getValue();
+        Object safaryType = cmbSafaryType.getValue();
 
+        if (rbnMale.isSelected()) {
+            gender = "Male";
+        } else {
+            gender = "Femal";
+        }
+
+
+        try {
+            if (!existCustomer(Id)){
+                Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement pstm = connection.prepareStatement("Insert into Customer Values (?,?,?,?,?,?,?,?,?)");
+                pstm.setString(1, Id);
+                pstm.setString(2, name);
+                pstm.setString(3, address);
+                pstm.setString(4, String.valueOf(dob));
+                pstm.setString(5, nic);
+                pstm.setString(6, contact);
+                pstm.setString(7, gender);
+                pstm.setString(8, String.valueOf(safaryId));
+                pstm.setString(9, String.valueOf(safaryType));
+                boolean x = pstm.executeUpdate() > 0;
+
+                if (x) {
+                    new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Saved..!").show();
+                    LoadAllCustomer();
+                    btnClearOnAction();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Customer Id Already Add..!").show();
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+
+        }
 
     }
 
