@@ -296,7 +296,16 @@ public class CustomerFormController {
     }
 
     public void btnClearOnAction() {
-
+        txtCusId.clear();
+        txtCusName.clear();
+        txtCusAddress.clear();
+        txtCusNic.clear();
+        txtContact.clear();
+        txtDob.setValue(LocalDate.parse("2000-01-01"));
+        cmbSafaryid.getItems().clear();
+        cmbSafaryType.getItems().clear();
+        rbnMale.setSelected(false);
+        rbnFemale.setSelected(false);
 
     }
 
