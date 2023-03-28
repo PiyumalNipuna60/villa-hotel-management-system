@@ -128,7 +128,34 @@ public class CustomerFormController {
     }
 
     private void loadComboBox() {
+        ObservableList obList = FXCollections.observableArrayList();
+        obList.add("S001");
+        obList.add("S002");
+        cmbSafaryid.setItems(obList);
 
+        ObservableList obList1 = FXCollections.observableArrayList();
+        obList1.add("Yala");
+        obList1.add("Beach");
+        cmbSafaryType.setItems(obList1);
+    }
+
+    @FXML
+    void btnDeleteOnAction(ActionEvent event) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE cusId=?");
+            pstm.setString(1, txtCusId.getText());
+            boolean b = pstm.executeUpdate() > 0;
+            if (b){
+                new Alert(Alert.AlertType.INFORMATION, "Customer " + txtCusId.getText() + " Delete..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
