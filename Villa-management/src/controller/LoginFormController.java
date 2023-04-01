@@ -13,24 +13,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginFormController {
 
-    @FXML
     private PasswordField txtPassword;
 
-    @FXML
     private TextField txtUserName;
 
-    @FXML
     private Label txtxSignIn;
 
-    @FXML
     void btnLoginOnAction(ActionEvent event) {
 
         try {
@@ -68,7 +62,6 @@ public class LoginFormController {
         }
     }
 
-    @FXML
     void txtSignInOnAction(MouseEvent event) {
 
     }

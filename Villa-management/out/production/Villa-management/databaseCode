@@ -1,0 +1,113 @@
+DROP DATABASE IF EXISTS villaManagement;
+CREATE DATABASE IF NOT EXISTS villaManagement;
+SHOW DATABASES;
+USE villaManagement;
+
+
+CREATE TABLE IF NOT EXISTS driver(
+                                     driverId varchar(20),
+                                     driverName varchar(20),
+                                     address varchar(20),
+                                     contact varchar(11),
+                                     CONSTRAINT PRIMARY KEY (driverId)
+);
+
+DESC driver;
+
+
+CREATE TABLE IF NOT EXISTS safary(
+                                     safaryId varchar(20),
+                                     type varchar(20),
+                                     date date,
+                                     time time,
+                                     driverId varchar(20),
+                                     CONSTRAINT PRIMARY KEY (safaryId,type),
+                                     CONSTRAINT FOREIGN KEY (driverId) REFERENCES driver(driverId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC safary;
+
+
+CREATE TABLE IF NOT EXISTS customer(
+                                       cusId varchar(20),
+                                       name varchar(30),
+                                       address text,
+                                       dob date,
+                                       nic varchar(11),
+                                       contact varchar(10),
+                                       sex varchar(10),
+                                       safaryId varchar(20),
+                                       type varchar(20),
+                                       CONSTRAINT PRIMARY KEY (cusId),
+                                       CONSTRAINT FOREIGN KEY (safaryId,type) REFERENCES safary(safaryId,type) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC customer;
+
+
+CREATE TABLE IF NOT EXISTS employee(
+                                       empId varchar(20),
+                                       name varchar(30),
+                                       address text,
+                                       dob date,
+                                       nic varchar(11),
+                                       contact varchar(10),
+                                       salary varchar(7),
+                                       userName varchar(),
+                                       password varchar(10),
+                                       CONSTRAINT PRIMARY KEY (empId)
+);
+DESC employee;
+
+CREATE TABLE IF NOT EXISTS customerDetails(
+                                       empId varchar(20),
+                                       cusId varchar(20),
+                                       details varchar(20),
+                                       date date,
+                                       time time,
+                                       CONSTRAINT PRIMARY KEY (empId,cusId),
+                                       CONSTRAINT FOREIGN KEY (empId) REFERENCES employee(empId) ON DELETE CASCADE ON UPDATE CASCADE,
+                                       CONSTRAINT FOREIGN KEY (cusId) REFERENCES customer(cusId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC customerDetails;
+
+CREATE TABLE IF NOT EXISTS room(
+                                       roomId varchar(20),
+                                       type varchar(30),
+                                       description varchar(30),
+                                       price varchar(7),
+                                       CONSTRAINT PRIMARY KEY (roomId)
+);
+DESC room;
+
+CREATE TABLE IF NOT EXISTS roomDetails(
+                                   roomId varchar(20),
+                                   empId varchar(20),
+                                   availabele varchar(30),
+                                   CONSTRAINT PRIMARY KEY (roomId,empId),
+                                   CONSTRAINT FOREIGN KEY (roomId) REFERENCES room(roomId) ON DELETE CASCADE ON UPDATE CASCADE,
+                                   CONSTRAINT FOREIGN KEY (empId) REFERENCES employee(empId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC roomDetails;
+
+
+CREATE TABLE IF NOT EXISTS workingSchedule(
+                                               scheduleId varchar(20),
+                                               time time,
+                                               date date,
+                                               shift varchar(20),
+                                               CONSTRAINT PRIMARY KEY (scheduleId,time,date,shift)
+);
+DESC workingSchedule;
+
+
+CREATE TABLE IF NOT EXISTS employeeSchedule(
+                                               scheduleId varchar(20),
+                                               time time,
+                                               date date,
+                                               shift varchar(20),
+                                               empId varchar(20),
+                                               CONSTRAINT FOREIGN KEY (scheduleId,time,date,shift) REFERENCES workingSchedule(scheduleId,time,date,shift) ON DELETE CASCADE ON UPDATE CASCADE,
+                                               CONSTRAINT FOREIGN KEY (empId) REFERENCES employee(empId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC employeeSchedule;
+
+insert into employee values('E001','kamal','galle','2000-02-01','1999002281','0752545856','25000','nipuna','12345');

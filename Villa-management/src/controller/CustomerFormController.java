@@ -27,63 +27,43 @@ import java.time.format.DateTimeFormatter;
 public class CustomerFormController {
 
     public DatePicker txtDob;
-    @FXML
     private ComboBox cmbSafaryid;
-    @FXML
     private ComboBox cmbSafaryType;
 
-    @FXML
     private TableColumn colAddress;
 
-    @FXML
     private TableColumn colBirthday;
 
-    @FXML
     private TableColumn colContact;
 
-    @FXML
     private TableColumn colGender;
 
-    @FXML
     private TableColumn colId;
 
-    @FXML
     private TableColumn colName;
 
-    @FXML
     private TableColumn colNic;
 
-    @FXML
     private TableColumn colSalary;
 
-    @FXML
     private Label lblDate;
 
-    @FXML
     private RadioButton rbnFemale;
 
-    @FXML
     private RadioButton rbnMale;
 
-    @FXML
     private ToggleGroup sexuaol;
 
-    @FXML
     private TableView<CustomerTm> tblCustomer;
 
-    @FXML
     private TextField txtContact;
 
-    @FXML
     private TextField txtCusAddress;
 
-    @FXML
     private TextField txtCusId;
 
-    @FXML
     private TextField txtCusName;
 
-    @FXML
     private TextField txtCusNic;
 
     public void initialize() {
@@ -139,7 +119,6 @@ public class CustomerFormController {
         cmbSafaryType.setItems(obList1);
     }
 
-    @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
@@ -159,7 +138,6 @@ public class CustomerFormController {
 
     }
 
-    @FXML
     void btnSaveOnAction(ActionEvent event) {
         String Id = txtCusId.getText();
         String name = txtCusName.getText();
@@ -211,7 +189,6 @@ public class CustomerFormController {
 
     }
 
-    @FXML
     void btnSearchOnAction() {
         String id = txtCusId.getText();
         try {
@@ -245,7 +222,6 @@ public class CustomerFormController {
 
     }
 
-    @FXML
     void btnUpdateOnAction(ActionEvent event) {
         String Id = txtCusId.getText();
         String name = txtCusName.getText();
