@@ -193,7 +193,12 @@ public class SafaryFormController {
 
     @FXML
     void btnClearOnAction() {
-
+        txtTime.clear();
+        txtSafaryId.clear();
+        cmbDriverId.getItems().clear();
+        cmbSafaryType.getItems().clear();
+        lblDriverName.setText("");
+        lblDriverContct.setText("");
     }
 
     @FXML
