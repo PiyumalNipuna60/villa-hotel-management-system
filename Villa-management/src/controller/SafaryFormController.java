@@ -116,7 +116,26 @@ public class SafaryFormController {
     }
 
     private void loadComboBox() {
+        ObservableList obList = FXCollections.observableArrayList();
+        obList.add("Yala");
+        obList.add("Beach");
+        obList.add("Camping");
+        obList.add("diving");
+        cmbSafaryType.setItems(obList);
 
+        ObservableList obList2 = FXCollections.observableArrayList();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select * from Driver");
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                obList2.add(new String(resultSet.getString(1)));
+            }
+            cmbDriverId.setItems(obList2);
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void LoadAllCustomer() {
