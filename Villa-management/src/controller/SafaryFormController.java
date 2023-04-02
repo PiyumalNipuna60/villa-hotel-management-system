@@ -287,7 +287,31 @@ public class SafaryFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String id = txtSafaryId.getText();
+        Object type = cmbSafaryType.getValue();
+        LocalDate date = txtDate.getValue();
+        String time = txtTime.getText();
+        Object driverId = cmbDriverId.getValue();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("UPDATE safary SET type=?, date=?,time=?,driverId=? WHERE safaryId=?");
+            pstm.setString(5, id);
+            pstm.setString(1, String.valueOf(type));
+            pstm.setString(2, String.valueOf(date));
+            pstm.setString(3, time);
+            pstm.setString(4, String.valueOf(driverId));
+            boolean update = pstm.executeUpdate() > 0;
+            if (update) {
+                new Alert(Alert.AlertType.INFORMATION, id + " Safary Updated..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
