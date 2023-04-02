@@ -6,16 +6,36 @@ public class Safary {
     private  String date;
     private  String time;
     private  String driverId;
+    private  String driverName;
+    private  String driverContact;
 
     public Safary() {
     }
 
-    public Safary(String safaryId, String type, String date, String time, String driverId) {
+    public Safary(String safaryId, String type, String date, String time, String driverId, String driverName, String driverContact) {
         this.safaryId = safaryId;
         this.type = type;
         this.date = date;
         this.time = time;
         this.driverId = driverId;
+        this.driverName = driverName;
+        this.driverContact = driverContact;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public String getDriverContact() {
+        return driverContact;
+    }
+
+    public void setDriverContact(String driverContact) {
+        this.driverContact = driverContact;
     }
 
     public String getSafaryId() {
@@ -66,6 +86,8 @@ public class Safary {
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
                 ", driverId='" + driverId + '\'' +
+                ", driverName='" + driverName + '\'' +
+                ", driverContact='" + driverContact + '\'' +
                 '}';
     }
 }

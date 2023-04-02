@@ -5,7 +5,7 @@ public class Employee {
     private String empId;
     private String name;
     private String address;
-    private String dob;
+    private String age;
     private String nic;
     private String contact;
     private String salary;
@@ -15,11 +15,11 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String empId, String name, String address, String dob, String nic, String contact, String salary, String userName, String password) {
+    public Employee(String empId, String name, String address, String age, String nic, String contact, String salary, String userName, String password) {
         this.empId = empId;
         this.name = name;
         this.address = address;
-        this.dob = dob;
+        this.age = age;
         this.nic = nic;
         this.contact = contact;
         this.salary = salary;
@@ -51,12 +51,12 @@ public class Employee {
         this.address = address;
     }
 
-    public String getDob() {
-        return dob;
+    public String getAge() {
+        return age;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public String getNic() {
@@ -105,7 +105,7 @@ public class Employee {
                 "empId='" + empId + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", dob='" + dob + '\'' +
+                ", age='" + age + '\'' +
                 ", nic='" + nic + '\'' +
                 ", contact='" + contact + '\'' +
                 ", salary='" + salary + '\'' +
