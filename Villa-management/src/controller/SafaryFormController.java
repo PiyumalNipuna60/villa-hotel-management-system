@@ -73,7 +73,27 @@ public class SafaryFormController {
     private TextField txtTime;
 
     public void initialize() {
+        colSafaryId.setCellValueFactory(new PropertyValueFactory("safaryId"));
+        colType.setCellValueFactory(new PropertyValueFactory("type"));
+        colDate.setCellValueFactory(new PropertyValueFactory("date"));
+        colTime.setCellValueFactory(new PropertyValueFactory("time"));
+        colDriverId.setCellValueFactory(new PropertyValueFactory("driverId"));
+        colDriverName.setCellValueFactory(new PropertyValueFactory("driverName"));
+        colDriverContact.setCellValueFactory(new PropertyValueFactory("driverContact"));
 
+        LoadAllCustomer();
+        generateRealTime();
+        loadComboBox();
+
+        cmbDriverId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    setDriverFields(newValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
