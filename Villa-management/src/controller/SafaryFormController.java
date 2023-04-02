@@ -254,7 +254,35 @@ public class SafaryFormController {
     @FXML
     void btnSearchOnAction(ActionEvent event) {
         String id = txtSafaryId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from safary where safaryId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (!existRoom(id)) {
+                new Alert(Alert.AlertType.ERROR, id + " Safary Not Register..!").show();
+            } else {
+                if (rst.next()) {
+                    cmbSafaryType.setValue(rst.getString(2));
+                    txtDate.setValue(LocalDate.parse(rst.getString(3)));
+                    txtTime.setText(rst.getString(4));
+                    cmbDriverId.setValue(rst.getString(5));
+
+
+                    PreparedStatement pstm2 = connection.prepareStatement("select*from driver where driverId=?");
+                    pstm2.setString(1, (rst.getString(5)));
+                    ResultSet rst2 = pstm2.executeQuery();
+
+                    if (rst2.next()){
+                        lblDriverName.setText(rst2.getString(2));
+                        lblDriverContct.setText(rst2.getString(4));
+                    }
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
