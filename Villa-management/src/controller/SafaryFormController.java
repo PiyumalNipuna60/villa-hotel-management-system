@@ -222,7 +222,33 @@ public class SafaryFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        String id = txtSafaryId.getText();
+        Object type = cmbSafaryType.getValue();
+        LocalDate date = txtDate.getValue();
+        String time = txtTime.getText();
+        Object driverId = cmbDriverId.getValue();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO safary VALUES (?,?,?,?,?)");
+            pstm.setString(1, id);
+            pstm.setString(2, String.valueOf(type));
+            pstm.setString(3, String.valueOf(date));
+            pstm.setString(4, time);
+            pstm.setString(5, String.valueOf(driverId));
+            boolean save = pstm.executeUpdate() > 0;
+            if (save) {
+                new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
