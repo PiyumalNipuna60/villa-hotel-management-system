@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS employee(
                                        name varchar(30),
                                        address text,
                                        age int,
-                                       gender varchar(10),
                                        nic varchar(11),
                                        contact varchar(10),
                                        salary varchar(7),
@@ -60,6 +59,9 @@ CREATE TABLE IF NOT EXISTS employee(
                                        CONSTRAINT PRIMARY KEY (empId)
 );
 DESC employee;
+
+insert into employee values('E001','kamal','galle','20','1999002281','0752545856','25000','nipuna','12345');
+
 
 CREATE TABLE IF NOT EXISTS customerDetails(
                                               empId varchar(20),
@@ -77,6 +79,7 @@ CREATE TABLE IF NOT EXISTS room(
                                    roomId varchar(20),
                                    type varchar(30),
                                    description varchar(30),
+                                   available varchar(20),
                                    price varchar(7),
                                    CONSTRAINT PRIMARY KEY (roomId)
 );
@@ -114,5 +117,3 @@ CREATE TABLE IF NOT EXISTS employeeSchedule(
                                                CONSTRAINT FOREIGN KEY (empId) REFERENCES employee(empId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 DESC employeeSchedule;
-
-insert into employee values('E001','kamal','galle','20','Male','1999002281','0752545856','25000','nipuna','12345');
