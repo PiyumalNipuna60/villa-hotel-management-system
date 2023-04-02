@@ -2,12 +2,10 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -77,33 +75,32 @@
                   </TextField>
                </children>
             </Pane>
-            <Pane layoutX="204.0" layoutY="229.0" prefHeight="60.0" prefWidth="159.0">
-               <children>
-                  <Label layoutX="13.0" layoutY="3.0" text="Gender">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <RadioButton fx:id="rbnMale" layoutX="12.0" layoutY="30.0" mnemonicParsing="false" text="Male">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="sexuaol" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="rbnFemale" layoutX="90.0" layoutY="30.0" mnemonicParsing="false" text="Female" toggleGroup="$sexuaol" />
-                  <TextField fx:id="txtEmpAge" layoutX="-179.0" layoutY="22.0" prefHeight="35.0" prefWidth="105.0" promptText="Ex: 20" style="-fx-background-radius: 10;">
-                     <effect>
-                        <Glow />
-                     </effect>
-                  </TextField>
-               </children>
-            </Pane>
-            <Pane layoutX="15.0" layoutY="233.0" prefHeight="60.0" prefWidth="159.0">
+            <Pane layoutX="21.0" layoutY="229.0" prefHeight="60.0" prefWidth="159.0">
                <children>
                   <Label layoutX="13.0" layoutY="-1.0" text="Age">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="txtEmpAge" layoutX="2.0" layoutY="19.0" prefHeight="35.0" prefWidth="105.0" promptText="Ex: 20" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="155.0" layoutY="229.0" prefHeight="60.0" prefWidth="221.0">
+               <children>
+                  <Label layoutX="13.0" layoutY="-1.0" text="Contact">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtEmpContact" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="206.0" promptText="Ex: 0724585458" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
                </children>
             </Pane>
             <Pane layoutX="474.0" layoutY="30.0" prefHeight="60.0" prefWidth="378.0">
@@ -122,26 +119,40 @@
             </Pane>
             <Pane layoutX="474.0" layoutY="98.0" prefHeight="60.0" prefWidth="378.0">
                <children>
-                  <Label layoutX="13.0" layoutY="-1.0" text="Contact">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="txtEmpContact" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="359.0" promptText="Ex: 0724585458" style="-fx-background-radius: 10;">
-                     <effect>
-                        <Glow />
-                     </effect>
-                  </TextField>
-               </children>
-            </Pane>
-            <Pane layoutX="476.0" layoutY="165.0" prefHeight="60.0" prefWidth="378.0">
-               <children>
                   <Label layoutX="15.0" layoutY="-1.0" text="Salary">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtEmpSalary" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="359.0" promptText="Ex: 20000.00" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="472.0" layoutY="178.0" prefHeight="60.0" prefWidth="181.0">
+               <children>
+                  <Label layoutX="15.0" layoutY="-1.0" text="User Name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtEmpUserName" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="159.0" promptText="Ex: 20000.00" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="670.0" layoutY="178.0" prefHeight="60.0" prefWidth="174.0">
+               <children>
+                  <Label layoutX="15.0" layoutY="-1.0" text="Password">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtPassword" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="135.0" promptText="Ex: 20000.00" style="-fx-background-radius: 10;">
                      <effect>
                         <Glow />
                      </effect>
@@ -162,13 +173,12 @@
       <TableView fx:id="tblEmployee" layoutX="63.0" layoutY="428.0" prefHeight="285.0" prefWidth="866.0">
          <columns>
             <TableColumn fx:id="colId" prefWidth="75.0" text="Id" />
-            <TableColumn fx:id="colName" prefWidth="130.4000244140625" text="Name" />
-            <TableColumn fx:id="colAddress" prefWidth="99.19998168945312" text="Address" />
-            <TableColumn fx:id="colBAge" prefWidth="91.2000732421875" text="Age" />
-            <TableColumn fx:id="colGender" prefWidth="96.79998779296875" text="Gender" />
-            <TableColumn fx:id="colnic" prefWidth="117.5999755859375" text="Nic" />
-            <TableColumn fx:id="colContact" prefWidth="119.2000732421875" text="Contact" />
-            <TableColumn fx:id="colSalary" prefWidth="136.7999267578125" text="Salary" />
+            <TableColumn fx:id="colName" prefWidth="152.0" text="Name" />
+            <TableColumn fx:id="colAddress" prefWidth="105.5999755859375" text="Address" />
+            <TableColumn fx:id="colBAge" prefWidth="97.5999755859375" text="Age" />
+            <TableColumn fx:id="colnic" prefWidth="140.79998779296875" text="Nic" />
+            <TableColumn fx:id="colContact" prefWidth="144.79998779296875" text="Contact" />
+            <TableColumn fx:id="colSalary" prefWidth="151.99993896484375" text="Salary" />
          </columns>
       </TableView>
       <Separator layoutX="68.0" layoutY="412.0" prefHeight="1.0" prefWidth="854.0" />

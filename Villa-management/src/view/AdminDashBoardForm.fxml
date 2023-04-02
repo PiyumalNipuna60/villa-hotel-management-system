@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="705.0" prefWidth="1202.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashBoardFormController">
+<AnchorPane prefHeight="747.0" prefWidth="1244.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashBoardFormController">
    <children>
-      <Pane layoutX="15.0" layoutY="12.0" prefHeight="677.0" prefWidth="234.0" style="-fx-background-color: #dff9fb; -fx-border-radius: 15px; -fx-background-radius: 15;">
+      <Pane layoutX="15.0" layoutY="12.0" prefHeight="724.0" prefWidth="234.0" style="-fx-background-color: #dff9fb; -fx-border-radius: 15px; -fx-background-radius: 15;">
          <effect>
             <DropShadow blurType="TWO_PASS_BOX" height="70.18" radius="32.837500000000006" spread="0.17" width="63.17" />
          </effect>
@@ -61,7 +61,7 @@
                   </Button>
                </children>
             </Pane>
-            <Pane layoutX="14.0" layoutY="277.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
+            <Pane layoutX="13.0" layoutY="469.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnRoomOnAction" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -129,14 +129,31 @@
                   </Button>
                </children>
             </Pane>
-            <Pane layoutX="14.0" layoutY="620.0" onDragDetected="#btnExitPlanOnAction" prefHeight="44.0" prefWidth="94.0">
+            <Pane layoutX="15.0" layoutY="666.0" onDragDetected="#btnExitPlanOnAction" prefHeight="44.0" prefWidth="94.0">
                <children>
                   <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnExitPlanOnAction" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icon/logout.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnExitPlanOnAction" prefHeight="35.0" prefWidth="45.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Exit" underline="true">
+                  <Button layoutX="40.0" layoutY="5.0" mnemonicParsing="false" onAction="#btnExitPlanOnAction" prefHeight="35.0" prefWidth="45.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Exit" underline="true">
+                     <effect>
+                        <Blend />
+                     </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane layoutX="14.0" layoutY="275.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="6.0" layoutY="6.0" onDragDetected="#btnRoomOnAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/icon/bed.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="46.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnBookingRoomOnAction" onDragDetected="#btnRoomOnAction" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Booking Room" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -148,12 +165,12 @@
             </Pane>
          </children>
       </Pane>
-      <Pane layoutX="256.0" layoutY="13.0" prefHeight="678.0" prefWidth="937.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+      <Pane fx:id="secondAncherPane" layoutX="256.0" layoutY="13.0" prefHeight="724.0" prefWidth="980.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
          <effect>
             <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
          </effect>
          <children>
-            <Pane layoutX="27.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+            <Pane layoutX="47.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
                </effect>
@@ -170,7 +187,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="259.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+            <Pane layoutX="279.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
                </effect>
@@ -187,7 +204,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="489.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+            <Pane layoutX="509.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
                </effect>
@@ -204,7 +221,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="719.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
+            <Pane layoutX="739.0" layoutY="105.0" prefHeight="133.0" prefWidth="191.0" style="-fx-background-color: white; -fx-border-radius: 15px; -fx-background-radius: 15;">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="29.25" radius="9.1525" spread="0.11" width="9.36" />
                </effect>
@@ -221,17 +238,17 @@
                   </Label>
                </children>
             </Pane>
-            <Label fx:id="lbtDate" layoutX="27.0" layoutY="24.0" prefHeight="43.0" prefWidth="175.0" text="2023:12:05">
+            <Label fx:id="lbtDate" layoutX="44.0" layoutY="24.0" prefHeight="43.0" prefWidth="175.0">
                <font>
                   <Font size="29.0" />
                </font>
             </Label>
-            <Label fx:id="lblTime" layoutX="829.0" layoutY="24.0" prefHeight="43.0" prefWidth="81.0" text="12.30">
+            <Label fx:id="lblTime" layoutX="764.0" layoutY="24.0" prefHeight="43.0" prefWidth="165.0">
                <font>
                   <Font size="29.0" />
                </font>
             </Label>
-            <Separator layoutX="23.0" layoutY="77.0" prefHeight="4.0" prefWidth="894.0" />
+            <Separator layoutX="39.0" layoutY="77.0" prefHeight="4.0" prefWidth="894.0" />
          </children>
       </Pane>
    </children>

@@ -44,6 +44,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -58,6 +61,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -72,6 +78,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -86,6 +95,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>

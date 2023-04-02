@@ -42,10 +42,13 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtSafaryId" layoutX="7.0" layoutY="18.0" onKeyPressed="#SearchOnKeyPress" prefHeight="35.0" prefWidth="353.0" promptText="Ex: SF001" style="-fx-background-radius: 10;">
+                  <TextField fx:id="txtSafaryId" layoutX="7.0" layoutY="18.0" onKeyPressed="#SearchOnKeyPress" prefHeight="35.0" prefWidth="353.0" promptText="Ex: SF-001" style="-fx-background-radius: 10;">
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -76,10 +79,13 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTime" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="205.0" promptText="Ex: 12.00" style="-fx-background-radius: 10;">
+                  <TextField fx:id="txtTime" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="205.0" promptText="Ex: 12.00.00" style="-fx-background-radius: 10;">
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -93,24 +99,30 @@
                   <ComboBox fx:id="cmbDriverId" layoutX="10.0" layoutY="18.0" prefHeight="35.0" prefWidth="150.0" promptText="-Select Driver-" />
                </children>
             </Pane>
-            <Pane layoutX="642.0" layoutY="30.0" prefHeight="60.0" prefWidth="212.0">
+            <Pane layoutX="655.0" layoutY="42.0" prefHeight="46.0" prefWidth="150.0" style="-fx-background-color: #c1b9b9;">
                <children>
-                  <Label layoutX="13.0" layoutY="-1.0" text="Driver Name">
+                  <Label layoutX="9.0" layoutY="-4.0" text="Driver Name">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDriverName" layoutX="13.0" layoutY="17.0" prefHeight="35.0" prefWidth="158.0" style="-fx-background-color: #c1b9b9;" text="name" textAlignment="CENTER" textFill="#100202" />
+                  <Label fx:id="lblDriverName" layoutX="33.0" layoutY="11.0" prefHeight="35.0" prefWidth="107.0" style="-fx-background-color: #c1b9b9;" textAlignment="CENTER" textFill="#100202" underline="true">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
-            <Pane layoutX="550.0" layoutY="98.0" prefHeight="60.0" prefWidth="180.0">
+            <Pane layoutX="569.0" layoutY="112.0" prefHeight="48.0" prefWidth="150.0" style="-fx-background-color: #c1b9b9;">
                <children>
-                  <Label layoutX="13.0" layoutY="-1.0" text="Contact">
+                  <Label layoutX="15.0" layoutY="-4.0" text="Contact">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblDriverContct" layoutX="12.0" layoutY="19.0" prefHeight="35.0" prefWidth="158.0" style="-fx-background-color: #c1b9b9;" textAlignment="CENTER" textFill="#100202" />
+                  <Label fx:id="lblDriverContct" layoutX="28.0" layoutY="12.0" prefHeight="35.0" prefWidth="107.0" style="-fx-background-color: #c1b9b9;" textAlignment="CENTER" textFill="#100202" underline="true">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
             <Button layoutX="477.0" layoutY="196.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Save" />
@@ -128,14 +140,12 @@
       <TableView fx:id="tblSafary" layoutX="63.0" layoutY="414.0" prefHeight="285.0" prefWidth="866.0">
          <columns>
             <TableColumn fx:id="colSafaryId" prefWidth="67.99996566772461" text="SafaryId" />
-            <TableColumn fx:id="colType" prefWidth="99.20001220703125" text="Type" />
-            <TableColumn fx:id="colDate" prefWidth="77.59999084472656" text="Date" />
-            <TableColumn fx:id="colTime" prefWidth="94.4000244140625" text="Time" />
-            <TableColumn fx:id="colCusId" prefWidth="105.5999755859375" text="Customer Id" />
-            <TableColumn fx:id="colCusName" prefWidth="105.59991455078125" text="Customer Name" />
-            <TableColumn fx:id="colDriverId" prefWidth="117.60009765625" text="Driver Id" />
-            <TableColumn fx:id="colDriverName" prefWidth="101.5999755859375" text="Driver Name" />
-            <TableColumn fx:id="colDriverContact" prefWidth="101.5999755859375" text="Contact" />
+            <TableColumn fx:id="colType" prefWidth="120.79998779296875" text="Type" />
+            <TableColumn fx:id="colDate" prefWidth="110.4000244140625" text="Date" />
+            <TableColumn fx:id="colTime" prefWidth="113.5999755859375" text="Time" />
+            <TableColumn fx:id="colDriverId" prefWidth="136.79998779296875" text="Driver Id" />
+            <TableColumn fx:id="colDriverName" prefWidth="156.79998779296875" text="Driver Name" />
+            <TableColumn fx:id="colDriverContact" prefWidth="164.800048828125" text="Contact" />
          </columns>
       </TableView>
       <Separator layoutX="68.0" layoutY="392.0" prefHeight="1.0" prefWidth="854.0" />

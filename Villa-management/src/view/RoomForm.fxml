@@ -41,10 +41,13 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtRoomId" layoutX="7.0" layoutY="18.0" onKeyPressed="#SearchOnKeyPress" prefHeight="35.0" prefWidth="364.0" promptText="Ex: D001" style="-fx-background-radius: 10;">
+                  <TextField fx:id="txtRoomId" layoutX="7.0" layoutY="18.0" onKeyPressed="#SearchOnKeyPress" prefHeight="35.0" prefWidth="364.0" promptText="Ex: Rm001" style="-fx-background-radius: 10;">
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -99,6 +102,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
