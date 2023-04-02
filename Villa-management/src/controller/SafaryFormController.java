@@ -98,7 +98,21 @@ public class SafaryFormController {
     }
 
     private void setDriverFields(Object newValue) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM driver WHERE driverId=?");
+            pstm.setString(1, String.valueOf(newValue));
+            ResultSet rst = pstm.executeQuery();
 
+            if (rst.next()){
+                lblDriverName.setText(rst.getString(2));
+                lblDriverContct.setText(rst.getString(4));
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void loadComboBox() {
