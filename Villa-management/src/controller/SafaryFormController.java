@@ -203,7 +203,21 @@ public class SafaryFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM safary WHERE safaryId=?");
+            pstm.setString(1, txtSafaryId.getText());
+            boolean b = pstm.executeUpdate() > 0;
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "Safary  " + txtSafaryId.getText() + " Deleted..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
