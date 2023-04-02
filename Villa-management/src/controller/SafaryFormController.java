@@ -1,55 +1,55 @@
 package controller;
 
+import db.DBConnection;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
+import view.tm.RoomTM;
+import view.tm.SafaryTm;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class SafaryFormController {
+    @FXML
+    private ComboBox cmbDriverId;
 
     @FXML
-    private ComboBox<?> cmbCusId;
+    private ComboBox cmbSafaryType;
 
     @FXML
-    private ComboBox<?> cmbDriverId;
+    private TableColumn colDate;
 
     @FXML
-    private ComboBox<?> cmbSafaryType;
+    private TableColumn colDriverContact;
 
     @FXML
-    private TableColumn<?, ?> colCusId;
+    private TableColumn colDriverId;
 
     @FXML
-    private TableColumn<?, ?> colCusName;
+    private TableColumn colDriverName;
 
     @FXML
-    private TableColumn<?, ?> colDate;
+    private TableColumn colSafaryId;
 
     @FXML
-    private TableColumn<?, ?> colDriverContact;
+    private TableColumn colTime;
 
     @FXML
-    private TableColumn<?, ?> colDriverId;
-
-    @FXML
-    private TableColumn<?, ?> colDriverName;
-
-    @FXML
-    private TableColumn<?, ?> colSafaryId;
-
-    @FXML
-    private TableColumn<?, ?> colTime;
-
-    @FXML
-    private TableColumn<?, ?> colType;
-
-    @FXML
-    private Label lblCusName;
+    private TableColumn colType;
 
     @FXML
     private Label lblDate;
@@ -61,7 +61,7 @@ public class SafaryFormController {
     private Label lblDriverName;
 
     @FXML
-    private TableView<?> tblSafary;
+    private TableView<SafaryTm> tblSafary;
 
     @FXML
     private DatePicker txtDate;
@@ -72,13 +72,31 @@ public class SafaryFormController {
     @FXML
     private TextField txtTime;
 
+    public void initialize() {
+
+
+    }
+
+    private void setDriverFields(Object newValue) {
+
+    }
+
+    private void loadComboBox() {
+
+    }
+
+    private void LoadAllCustomer() {
+
+
+    }
+
     @FXML
     void SearchOnKeyPress(KeyEvent event) {
 
     }
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction() {
 
     }
 
@@ -94,6 +112,7 @@ public class SafaryFormController {
 
     @FXML
     void btnSearchOnAction(ActionEvent event) {
+        String id = txtSafaryId.getText();
 
     }
 
@@ -101,5 +120,10 @@ public class SafaryFormController {
     void btnUpdateOnAction(ActionEvent event) {
 
     }
+
+
+
+
+
 
 }
