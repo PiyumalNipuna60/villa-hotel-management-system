@@ -139,7 +139,25 @@ public class SafaryFormController {
     }
 
     private void LoadAllCustomer() {
-
+        tblSafary.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select safary.safaryId,safary.type,safary.date,safary.time,safary.driverId,driver.driverName,driver.contact FROM safary LEFT JOIN driver ON safary.driverId=driver.driverId");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblSafary.getItems().add(new SafaryTm(
+                        rst.getString(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4),
+                        rst.getString(5),
+                        rst.getString(6),
+                        rst.getString(7)
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
