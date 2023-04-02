@@ -326,5 +326,12 @@ public class SafaryFormController {
     }
 
 
+    //----------------------existCustomer--------------------------------------------------------------
+    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT safaryId FROM safary WHERE safaryId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 
 }
