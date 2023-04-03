@@ -87,7 +87,28 @@ public class CustomerFormController {
     private TextField txtCusNic;
 
     public void initialize() {
+        loadComboBox();
 
+        colId.setCellValueFactory(new PropertyValueFactory("cusId"));
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colBirthday.setCellValueFactory(new PropertyValueFactory("dob"));
+        colNic.setCellValueFactory(new PropertyValueFactory("nic"));
+        colContact.setCellValueFactory(new PropertyValueFactory("contact"));
+        colGender.setCellValueFactory(new PropertyValueFactory("sex"));
+        colSalary.setCellValueFactory(new PropertyValueFactory("safaryId"));
+
+        LoadAllCustomer();
+        generateRealTime();
+        cmbSafaryType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    setCustomerFields(newValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
