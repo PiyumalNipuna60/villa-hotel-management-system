@@ -219,7 +219,13 @@ public class DriverFormController {
     }
 
 
-
+    //----------------------existCustomer--------------------------------------------------------------
+    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT driverId FROM driver WHERE driverId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 
 
 }
