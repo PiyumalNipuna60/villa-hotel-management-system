@@ -113,7 +113,19 @@ public class CustomerFormController {
     }
 
     private void setCustomerFields(Object newValue) {
-
+        ObservableList obList2 = FXCollections.observableArrayList();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select * from safary where type=?");
+            pstm.setString(1, String.valueOf(newValue));
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                obList2.add(new String(resultSet.getString(1)));
+            }
+            cmbSafaryid.setItems(obList2);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void LoadAllCustomer() {
