@@ -65,7 +65,21 @@ public class DriverFormController {
     }
 
     private void LoadAllCustomer() {
-
+        tblCustomer.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from driver");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblCustomer.getItems().add(new driverTm(
+                        rst.getString(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4)));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
