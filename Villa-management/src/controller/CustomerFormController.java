@@ -129,7 +129,27 @@ public class CustomerFormController {
     }
 
     private void LoadAllCustomer() {
+        tblCustomer.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from customer");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblCustomer.getItems().add(new CustomerTm(
+                        rst.getString("cusId"),
+                        rst.getString("name"),
+                        rst.getString("address"),
+                        rst.getString("dob"),
+                        rst.getString("Nic"),
+                        rst.getString("Contact"),
+                        rst.getString("sex"),
+                        rst.getString("safaryId")));
+            }
 
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void loadComboBox() {
