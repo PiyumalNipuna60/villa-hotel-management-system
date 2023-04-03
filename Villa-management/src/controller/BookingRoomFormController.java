@@ -178,7 +178,31 @@ public class BookingRoomFormController {
     }
 
     private void loadComboBox() {
+        ObservableList obList = FXCollections.observableArrayList();
+        obList.add("Full");
+        obList.add("Half");
+        cmbPaymentType.setItems(obList);
 
+
+        ObservableList obList2 = FXCollections.observableArrayList();
+        obList2.add("AC");
+        obList2.add("Non-AC");
+        obList2.add("Non-AC/Food");
+        obList2.add("AC/Food");
+        cmbRoomType.setItems(obList2);
+
+        ObservableList obList3 = FXCollections.observableArrayList();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select * from customer");
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                obList3.add(new String(resultSet.getString(1)));
+            }
+            cmbCustomerId.setItems(obList3);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void LoadAllCustomer() {
