@@ -241,7 +241,23 @@ public class BookingRoomFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM roomDetails WHERE roomId=? && cusId=?");
+            pstm.setString(1, String.valueOf(cmbRoomId.getValue()));
+            pstm.setString(1, String.valueOf(cmbCustomerId.getValue()));
 
+            boolean b = pstm.executeUpdate() > 0;
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "Room  " + cmbRoomId.getValue() + " Booking Deleted..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
