@@ -262,7 +262,31 @@ public class BookingRoomFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        Object roomId =cmbRoomId.getValue();
+        Object cusId = cmbCustomerId.getValue();
+        Object paymentType = cmbPaymentType.getValue();
+        String payment = txtPayment.getText();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO roomDetails VALUES (?,?,?,?)");
+            pstm.setString(1, String.valueOf(roomId));
+            pstm.setString(2, String.valueOf(cusId));
+            pstm.setString(3, String.valueOf(paymentType));
+            pstm.setString(4, payment);
+            boolean save = pstm.executeUpdate() > 0;
+            if (save) {
+                new Alert(Alert.AlertType.INFORMATION, roomId + " Room "+cusId+" ..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
