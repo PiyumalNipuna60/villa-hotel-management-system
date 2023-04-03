@@ -1,53 +1,67 @@
 package controller;
 
+import db.DBConnection;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
+import view.tm.BookingRoomTM;
+import view.tm.SafaryTm;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BookingRoomFormController {
 
     @FXML
-    private ComboBox<?> cmbCustomerId;
+    private ComboBox cmbCustomerId;
 
     @FXML
-    private ComboBox<?> cmbPaymentType;
+    private ComboBox cmbPaymentType;
 
     @FXML
-    private ComboBox<?> cmbRoomId;
+    private ComboBox cmbRoomId;
 
     @FXML
-    private ComboBox<?> cmbRoomType;
+    private ComboBox cmbRoomType;
 
     @FXML
-    private TableColumn<?, ?> colCash;
+    private TableColumn colCash;
 
     @FXML
-    private TableColumn<?, ?> colContact;
+    private TableColumn colContact;
 
     @FXML
-    private TableColumn<?, ?> colCusId;
+    private TableColumn colCusId;
 
     @FXML
-    private TableColumn<?, ?> colCusName;
+    private TableColumn colCusName;
 
     @FXML
-    private TableColumn<?, ?> colPayment;
+    private TableColumn colPayment;
 
     @FXML
-    private TableColumn<?, ?> colPaymentType;
+    private TableColumn colPaymentType;
 
     @FXML
-    private TableColumn<?, ?> colRoomId;
+    private TableColumn colRoomId;
 
     @FXML
-    private TableColumn<?, ?> colRoomPrice;
+    private TableColumn colRoomPrice;
 
     @FXML
-    private TableColumn<?, ?> colRoomType;
+    private TableColumn colRoomType;
 
     @FXML
     private Label lblAvailable;
@@ -65,13 +79,37 @@ public class BookingRoomFormController {
     private Label lblPeice;
 
     @FXML
-    private TableView<?> tblCustomer;
+    private TableView<BookingRoomTM> tblCustomer;
 
     @FXML
     private TextField txtPayment;
 
+    public void initialize() {
+
+
+    }
+
+    private void setCustomerDetails(Object newValue) {
+
+    }
+
+    private void setRoomDetails(Object newValue) {
+
+    }
+
+    private void setRoomFields(Object newValue) {
+
+    }
+
+    private void loadComboBox() {
+
+    }
+
+    private void LoadAllCustomer() {
+
+    }
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction() {
 
     }
 
@@ -94,5 +132,12 @@ public class BookingRoomFormController {
     void btnUpdateOnAction(ActionEvent event) {
 
     }
+
+
+
+
+
+    //----------------------existCustomer--------------------------------------------------------------
+
 
 }
