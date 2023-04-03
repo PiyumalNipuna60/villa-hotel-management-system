@@ -318,7 +318,36 @@ public class CustomerFormController {
     }
 
     public void SearchOnKeyPress(KeyEvent keyEvent) {
+        String id = txtCusId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from customer where cusId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (rst.next()) {
+                txtCusId.setText(rst.getString(1));
+                txtCusName.setText(rst.getString(2));
+                txtCusAddress.setText(rst.getString(3));
+                System.out.println(rst.getString(4));
+                txtDob.setValue(LocalDate.parse(rst.getString(4)));
+                txtCusNic.setText(rst.getString(5));
+                txtContact.setText(rst.getString(6));
+                String value = rst.getString(7);
+                System.out.println(value);
+                if (value.equals("Male")) {
+                    rbnMale.setSelected(true);
+                } else {
+                    rbnFemale.setSelected(true);
+                }
+
+                cmbSafaryid.setValue(rst.getObject(8));
+                cmbSafaryType.setValue(rst.getObject(9));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 
