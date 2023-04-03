@@ -181,7 +181,29 @@ public class DriverFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String id = txtCusId.getText();
+        String name = txtCusName.getText();
+        String address = txtCusAddress.getText();
+        String contact = txtCusContact.getText();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("UPDATE driver SET driverName=?, address=?,contact=? WHERE driverId=?");
+            pstm.setString(4, id);
+            pstm.setString(1, name);
+            pstm.setString(2, address);
+            pstm.setString(3, contact);
+            boolean update = pstm.executeUpdate() > 0;
+            if (update) {
+                new Alert(Alert.AlertType.INFORMATION, id + " Driver Updated..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
