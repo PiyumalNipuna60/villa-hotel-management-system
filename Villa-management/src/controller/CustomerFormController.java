@@ -163,7 +163,21 @@ public class CustomerFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE cusId=?");
+            pstm.setString(1, txtCusId.getText());
+            boolean b = pstm.executeUpdate() > 0;
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer " + txtCusId.getText() + " Delete..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
