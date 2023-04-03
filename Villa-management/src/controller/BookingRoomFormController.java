@@ -291,7 +291,41 @@ public class BookingRoomFormController {
 
     @FXML
     void btnSearchOnAction(ActionEvent event) {
+        Object cusId = cmbCustomerId.getValue();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from roomDetails where cusId=?");
+            pstm.setString(1, String.valueOf(cusId));
+            ResultSet rst = pstm.executeQuery();
 
+            if (!existRoom(String.valueOf(cusId))) {
+                new Alert(Alert.AlertType.ERROR, cusId + " Customer Not Booking Room..!").show();
+            } else {
+                if (rst.next()) {
+                    cmbRoomId.setValue(rst.getString(1));
+                    cmbPaymentType.setValue(rst.getString(3));
+                    txtPayment.setText(rst.getString(4));
+
+
+                    PreparedStatement pstm2 = connection.prepareStatement("select*from customer where cusId=?");
+                    pstm2.setString(1, String.valueOf(cusId));
+                    ResultSet rst2 = pstm2.executeQuery();
+                    if (rst2.next()){
+                        lblName.setText(rst2.getString(2));
+                        lblContact.setText(rst2.getString(4));
+                    }
+
+                    PreparedStatement pstm3 = connection.prepareStatement("select*from room where roomId=?");
+                    pstm3.setString(1, String.valueOf(cmbRoomId.getValue()));
+                    ResultSet rst3 = pstm3.executeQuery();
+                    if (rst3.next()){
+                        cmbRoomType.setValue(rst3.getString(2));
+                    }
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
