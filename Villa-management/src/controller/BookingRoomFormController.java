@@ -206,7 +206,27 @@ public class BookingRoomFormController {
     }
 
     private void LoadAllCustomer() {
-
+        tblCustomer.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("SELECT customer.cusId,customer.name,customer.contact,room.roomId,room.type,room.price,roomDetails.paymentType,roomDetails.payment,(room.price-roomDetails.payment) FROM customer JOIN roomDetails ON customer.cusId = roomDetails.cusId JOIN room ON room.roomId= roomDetails.roomId;");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblCustomer.getItems().add(new BookingRoomTM(
+                        rst.getString(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4),
+                        rst.getString(5),
+                        rst.getString(6),
+                        rst.getString(7),
+                        rst.getString(8),
+                        rst.getString(9)
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     void btnClearOnAction() {
