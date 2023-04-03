@@ -377,5 +377,10 @@ public class CustomerFormController {
 
 
     //----------------------existCustomer--------------------------------------------------------------
-
+    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT cusId FROM Customer WHERE cusId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 }
