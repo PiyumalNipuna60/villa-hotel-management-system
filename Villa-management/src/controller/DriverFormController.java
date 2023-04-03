@@ -84,7 +84,22 @@ public class DriverFormController {
 
     @FXML
     void SearchOnKeyPress(KeyEvent event) {
+        String id = txtCusId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from driver where driverId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (rst.next()) {
+                txtCusAddress.setText(rst.getString(3));
+                txtCusName.setText(rst.getString(2));
+                txtCusContact.setText(rst.getString(4));
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
