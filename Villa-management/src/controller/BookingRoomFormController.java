@@ -230,7 +230,13 @@ public class BookingRoomFormController {
     }
     @FXML
     void btnClearOnAction() {
-
+        cmbCustomerId.getSelectionModel().clearSelection();
+        cmbRoomId.getSelectionModel().clearSelection();
+        cmbPaymentType.getSelectionModel().clearSelection();
+        cmbRoomType.getSelectionModel().clearSelection();
+        txtPayment.clear();
+        lblName.setText("");
+        lblContact.setText("");
     }
 
     @FXML
