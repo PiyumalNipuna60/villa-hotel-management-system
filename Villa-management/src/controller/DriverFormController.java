@@ -158,7 +158,25 @@ public class DriverFormController {
 
     @FXML
     void btnSearchOnAction() {
+        String id = txtCusId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from driver where driverId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (!existCustomer(id)) {
+                new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
+            } else {
+                if (rst.next()) {
+                    txtCusAddress.setText(rst.getString(3));
+                    txtCusName.setText(rst.getString(2));
+                    txtCusContact.setText(rst.getString(4));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
