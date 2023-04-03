@@ -147,7 +147,18 @@ public class BookingRoomFormController {
     }
 
     private void setRoomDetails(Object newValue) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select * from room where roomId=?");
+            pstm.setString(1, String.valueOf(newValue));
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                lblPeice.setText(resultSet.getString(5));
+                lblAvailable.setText(resultSet.getString(4));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setRoomFields(Object newValue) {
