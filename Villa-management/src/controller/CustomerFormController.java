@@ -153,7 +153,12 @@ public class CustomerFormController {
     }
 
     private void loadComboBox() {
-
+        ObservableList obList = FXCollections.observableArrayList();
+        obList.add("Yala");
+        obList.add("Beach");
+        obList.add("Camping");
+        obList.add("diving");
+        cmbSafaryType.setItems(obList);
     }
 
     @FXML
