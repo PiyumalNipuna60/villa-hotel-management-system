@@ -273,7 +273,48 @@ public class CustomerFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String Id = txtCusId.getText();
+        String name = txtCusName.getText();
+        String address = txtCusAddress.getText();
+        LocalDate dob = txtDob.getValue();
+        String nic = txtCusNic.getText();
+        String contact = txtContact.getText();
+        String gender;
+        Object safaryId = cmbSafaryid.getValue();
+        Object safaryType = cmbSafaryType.getValue();
 
+        if (rbnMale.isSelected()) {
+            gender = "Male";
+        } else {
+            gender = "Femal";
+        }
+
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=?,dob=?,nic=?,contact=?,sex=?,safaryId=?,type=? WHERE cusId=?");
+            pstm.setString(1, name);
+            pstm.setString(2, address);
+            pstm.setString(3, String.valueOf(dob));
+            pstm.setString(4, nic);
+            pstm.setString(5, contact);
+            pstm.setString(6, gender);
+            pstm.setString(7, String.valueOf(safaryId));
+            pstm.setString(8, String.valueOf(safaryType));
+            pstm.setString(9, Id);
+            boolean x = pstm.executeUpdate() > 0;
+
+            if (x) {
+                new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Update..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void SearchOnKeyPress(KeyEvent keyEvent) {
