@@ -330,7 +330,29 @@ public class BookingRoomFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        Object roomId =cmbRoomId.getValue();
+        Object cusId = cmbCustomerId.getValue();
+        Object paymentType = cmbPaymentType.getValue();
+        String payment = txtPayment.getText();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("UPDATE roomDetails SET paymentType=?, payment=? WHERE roomId=? && cusId=?");
+            pstm.setString(3, String.valueOf(roomId));
+            pstm.setString(4, String.valueOf(cusId));
+            pstm.setString(1, String.valueOf(paymentType));
+            pstm.setString(2, payment);
+            boolean update = pstm.executeUpdate() > 0;
+            if (update) {
+                new Alert(Alert.AlertType.INFORMATION, "Room  " + roomId + " Booking Update..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
