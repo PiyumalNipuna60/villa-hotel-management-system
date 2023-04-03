@@ -132,7 +132,18 @@ public class BookingRoomFormController {
     }
 
     private void setCustomerDetails(Object newValue) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select * from customer where cusId=?");
+            pstm.setString(1, String.valueOf(newValue));
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                lblName.setText(resultSet.getString(2));
+                lblContact.setText(resultSet.getString(6));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setRoomDetails(Object newValue) {
