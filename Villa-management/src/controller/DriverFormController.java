@@ -52,7 +52,17 @@ public class DriverFormController {
     @FXML
     private TextField txtCusName;
 
+    public void initialize() {
 
+        colId.setCellValueFactory(new PropertyValueFactory("driverId"));
+        colName.setCellValueFactory(new PropertyValueFactory("driverName"));
+        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colContact.setCellValueFactory(new PropertyValueFactory("contact"));
+
+        LoadAllCustomer();
+        generateRealTime();
+
+    }
 
     private void LoadAllCustomer() {
 
