@@ -104,7 +104,10 @@ public class DriverFormController {
 
     @FXML
     void btnClearOnAction() {
-
+        txtCusId.clear();
+        txtCusName.clear();
+        txtCusAddress.clear();
+        txtCusContact.clear();
     }
 
     @FXML
