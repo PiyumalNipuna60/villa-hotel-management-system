@@ -85,7 +85,49 @@ public class BookingRoomFormController {
     private TextField txtPayment;
 
     public void initialize() {
+        colCusId.setCellValueFactory(new PropertyValueFactory("cusId"));
+        colCusName.setCellValueFactory(new PropertyValueFactory("cusName"));
+        colContact.setCellValueFactory(new PropertyValueFactory("contact"));
+        colRoomId.setCellValueFactory(new PropertyValueFactory("roomId"));
+        colRoomType.setCellValueFactory(new PropertyValueFactory("roomType"));
+        colRoomPrice.setCellValueFactory(new PropertyValueFactory("roomPrice"));
+        colPaymentType.setCellValueFactory(new PropertyValueFactory("paymentType"));
+        colPayment.setCellValueFactory(new PropertyValueFactory("payment"));
+        colCash.setCellValueFactory(new PropertyValueFactory("cash"));
 
+        LoadAllCustomer();
+        generateRealTime();
+        loadComboBox();
+
+        cmbRoomType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    setRoomFields(newValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        cmbRoomId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    setRoomDetails(newValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        cmbCustomerId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                try {
+                    setCustomerDetails(newValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
