@@ -146,7 +146,21 @@ public class EmployeeFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM employee WHERE empid=?");
+            pstm.setString(1, txtEmpId.getText());
+            boolean b = pstm.executeUpdate() > 0;
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "employee  " + txtEmpId.getText() + " Deleted..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
