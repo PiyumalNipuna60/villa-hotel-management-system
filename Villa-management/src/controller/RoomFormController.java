@@ -83,7 +83,23 @@ public class RoomFormController {
 
 
     private void LoadAllCustomer() {
-
+        tblRoom.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from room");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblRoom.getItems().add(new RoomTM(
+                        rst.getString(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4),
+                        rst.getString(5)
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
