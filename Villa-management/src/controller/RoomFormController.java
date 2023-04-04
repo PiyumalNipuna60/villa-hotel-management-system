@@ -154,7 +154,32 @@ public class RoomFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        String id = txtRoomId.getText();
+        Object type = cmbRoomType.getValue();
+        Object description = cmbRoomAvailable.getValue();
+        Object available = cmbRoomAvailable.getValue();
+        String price = txtRoomPrice.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO room VALUES (?,?,?,?,?)");
+            pstm.setString(1, id);
+            pstm.setString(2, String.valueOf(type));
+            pstm.setString(3, String.valueOf(description));
+            pstm.setString(4, String.valueOf(available));
+            pstm.setString(5, price);
+            boolean save = pstm.executeUpdate() > 0;
+            if (save) {
+                new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
+                LoadAllCustomer();
+                btnClearOnAction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
 
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
