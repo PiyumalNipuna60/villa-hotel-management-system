@@ -124,7 +124,11 @@ public class RoomFormController {
 
     @FXML
     void btnClearOnAction() {
-
+        txtRoomId.clear();
+        txtRoomPrice.clear();
+        cmbRoomType.getSelectionModel().clearSelection();
+        cmbRoomAvailable.getSelectionModel().clearSelection();
+        cmbRoomDescrition.getSelectionModel().clearSelection();
     }
 
     @FXML
