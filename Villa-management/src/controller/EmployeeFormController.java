@@ -73,12 +73,21 @@ public class EmployeeFormController {
     private TextField txtEmpSalary;
 
     @FXML
+    public void initialize() {
+
+    }
+
+    private void LoadAllCustomer() {
+
+    }
+
+    @FXML
     void SearchOnKeyPress(KeyEvent event) {
 
     }
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction() {
 
     }
 
@@ -93,7 +102,7 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnSearchOnAction(ActionEvent event) {
+    void btnSearchOnAction() {
 
     }
 
@@ -101,5 +110,10 @@ public class EmployeeFormController {
     void btnUpdateOnAction(ActionEvent event) {
 
     }
+
+
+
+
+
 
 }
