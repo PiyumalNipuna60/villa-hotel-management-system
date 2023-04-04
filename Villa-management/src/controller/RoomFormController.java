@@ -48,22 +48,41 @@ public class RoomFormController {
     private TextField txtRoomPrice;
 
     @FXML
+    public void initialize() {
+
+
+    }
+
+    private void loadComboBox() {
+
+    }
+
+
+    private void LoadAllCustomer() {
+
+    }
+
+    @FXML
     void SearchOnKeyPress(KeyEvent event) {
 
     }
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction() {
 
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
 
+
     }
+
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+
+
 
     }
 
@@ -76,5 +95,10 @@ public class RoomFormController {
     void btnUpdateOnAction(ActionEvent event) {
 
     }
+
+
+
+
+
 
 }
