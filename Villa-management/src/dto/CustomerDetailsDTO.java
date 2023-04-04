@@ -1,6 +1,6 @@
 package dto;
 
-public class CustomerDetailsDto {
+public class CustomerDetailsDTO {
 
     private String empId;
     private String cusId;
@@ -8,10 +8,10 @@ public class CustomerDetailsDto {
     private String date;
     private String time;
 
-    public CustomerDetailsDto() {
+    public CustomerDetailsDTO() {
     }
 
-    public CustomerDetailsDto(String empId, String cusId, String details, String date, String time) {
+    public CustomerDetailsDTO(String empId, String cusId, String details, String date, String time) {
         this.empId = empId;
         this.cusId = cusId;
         this.details = details;
