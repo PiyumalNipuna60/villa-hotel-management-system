@@ -165,7 +165,44 @@ public class EmployeeFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        String id = txtEmpId.getText();
+        String name = txtEmpName.getText();
+        String address = txtEmpAddress.getText();
+        String age = txtEmpAge.getText();
+        String nic = txtEmpNic.getText();
+        String contact = txtEmpContact.getText();
+        String salary = txtEmpSalary.getText();
+        String userName = txtEmpUserName.getText();
+        String password = txtPassword.getText();
 
+
+        try {
+            if (!existCustomer(id)) {
+                Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement pstm = connection.prepareStatement("INSERT INTO employee VALUES (?,?,?,?,?,?,?,?,?)");
+                pstm.setString(1, id);
+                pstm.setString(2, name);
+                pstm.setString(3, address);
+                pstm.setString(4, age);
+                pstm.setString(5, nic);
+                pstm.setString(6, contact);
+                pstm.setString(7, salary);
+                pstm.setString(8, userName);
+                pstm.setString(9, password);
+                boolean update = pstm.executeUpdate() > 0;
+                if (update) {
+                    new Alert(Alert.AlertType.INFORMATION, id + " Employee Added..!").show();
+                    LoadAllCustomer();
+                    btnClearOnAction();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Employee Id Already Add..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
