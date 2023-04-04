@@ -233,7 +233,37 @@ public class EmployeeFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String id = txtEmpId.getText();
+        String name = txtEmpName.getText();
+        String address = txtEmpAddress.getText();
+        String age = txtEmpAge.getText();
+        String nic = txtEmpNic.getText();
+        String contact = txtEmpContact.getText();
+        String salary = txtEmpSalary.getText();
+        String userName = txtEmpUserName.getText();
+        String password = txtPassword.getText();
 
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("UPDATE employee SET name=?, address=?,age=?,nic=?,contact=?,salary=? WHERE empId=?");
+            pstm.setString(7, id);
+            pstm.setString(1, name);
+            pstm.setString(2, address);
+            pstm.setString(3, age);
+            pstm.setString(4, nic);
+            pstm.setString(5, contact);
+            pstm.setString(6, salary);
+            boolean update = pstm.executeUpdate() > 0;
+            if (update) {
+                new Alert(Alert.AlertType.INFORMATION, id + " Employee Updated..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
