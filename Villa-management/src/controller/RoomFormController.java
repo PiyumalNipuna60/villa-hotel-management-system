@@ -62,7 +62,23 @@ public class RoomFormController {
     }
 
     private void loadComboBox() {
+        ObservableList obList = FXCollections.observableArrayList();
+        obList.add("AC");
+        obList.add("Non-AC");
+        obList.add("Non-AC/Food");
+        obList.add("AC/Food");
+        cmbRoomType.setItems(obList);
 
+        ObservableList obList1 = FXCollections.observableArrayList();
+        obList1.add("Single");
+        obList1.add("Double");
+        obList1.add("Family");
+        cmbRoomDescrition.setItems(obList1);
+
+        ObservableList obList2 = FXCollections.observableArrayList();
+        obList2.add("Available");
+        obList2.add("Non-Available");
+        cmbRoomAvailable.setItems(obList2);
     }
 
 
