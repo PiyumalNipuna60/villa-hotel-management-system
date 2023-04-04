@@ -104,7 +104,22 @@ public class RoomFormController {
 
     @FXML
     void SearchOnKeyPress(KeyEvent event) {
+        String id = txtRoomId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from room where roomId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (rst.next()) {
+                cmbRoomType.setValue(rst.getString(2));
+                cmbRoomDescrition.setValue(rst.getString(3));
+                cmbRoomAvailable.setValue(rst.getString(4));
+                txtRoomPrice.setText(rst.getString(5));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
