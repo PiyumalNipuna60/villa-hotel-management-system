@@ -47,7 +47,6 @@ public class RoomFormController {
     @FXML
     private TextField txtRoomPrice;
 
-    @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory("roomId"));
         colType.setCellValueFactory(new PropertyValueFactory("type"));
@@ -255,5 +254,4 @@ public class RoomFormController {
         pstm.setString(1, id);
         return pstm.executeQuery().next();
     }
-
 }
