@@ -237,7 +237,15 @@ public class RoomFormController {
         }
     }
 
-
+    private void generateRealTime() {
+        //lblDate.setText(LocalDate.now().toString());
+        Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+            lblDate.setText(LocalDateTime.now().format(formatter));
+        }), new KeyFrame(Duration.seconds(1)));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
 
 
