@@ -248,6 +248,12 @@ public class RoomFormController {
     }
 
 
-
+    //----------------------existCustomer--------------------------------------------------------------
+    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT roomId FROM room WHERE roomId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 
 }
