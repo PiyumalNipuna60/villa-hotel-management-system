@@ -207,7 +207,28 @@ public class EmployeeFormController {
 
     @FXML
     void btnSearchOnAction() {
+        String id = txtEmpId.getText();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from employee where empId=?");
+            pstm.setString(1, id);
+            ResultSet rst = pstm.executeQuery();
 
+            if (!existCustomer(id)) {
+                new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
+            } else {
+                if (rst.next()) {
+                    txtEmpName.setText(rst.getString(2));
+                    txtEmpAddress.setText(rst.getString(3));
+                    txtEmpAge.setText(rst.getString(4));
+                    txtEmpNic.setText(rst.getString(5));
+                    txtEmpContact.setText(rst.getString(6));
+                    txtEmpSalary.setText(rst.getString(7));
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
