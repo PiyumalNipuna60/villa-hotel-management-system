@@ -133,7 +133,21 @@ public class RoomFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM room WHERE roomId=?");
+            pstm.setString(1, txtRoomId.getText());
+            boolean b = pstm.executeUpdate() > 0;
+            if (b) {
+                new Alert(Alert.AlertType.INFORMATION, "employee  " + txtRoomId.getText() + " Deleted..!").show();
+                btnClearOnAction();
+                LoadAllCustomer();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
