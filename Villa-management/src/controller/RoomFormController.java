@@ -49,7 +49,15 @@ public class RoomFormController {
 
     @FXML
     public void initialize() {
+        colId.setCellValueFactory(new PropertyValueFactory("roomId"));
+        colType.setCellValueFactory(new PropertyValueFactory("type"));
+        colDescription.setCellValueFactory(new PropertyValueFactory("description"));
+        colAvailable.setCellValueFactory(new PropertyValueFactory("available"));
+        colPrice.setCellValueFactory(new PropertyValueFactory("price"));
 
+        LoadAllCustomer();
+        generateRealTime();
+        loadComboBox();
 
     }
 
