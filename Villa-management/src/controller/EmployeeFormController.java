@@ -75,6 +75,16 @@ public class EmployeeFormController {
     @FXML
     public void initialize() {
 
+        colId.setCellValueFactory(new PropertyValueFactory("empId"));
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colBAge.setCellValueFactory(new PropertyValueFactory("age"));
+        colnic.setCellValueFactory(new PropertyValueFactory("nic"));
+        colContact.setCellValueFactory(new PropertyValueFactory("contact"));
+        colSalary.setCellValueFactory(new PropertyValueFactory("salary"));
+
+        LoadAllCustomer();
+        generateRealTime();
     }
 
     private void LoadAllCustomer() {
