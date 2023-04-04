@@ -88,7 +88,25 @@ public class EmployeeFormController {
     }
 
     private void LoadAllCustomer() {
-
+        tblEmployee.getItems().clear();
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement pstm = connection.prepareStatement("select*from employee");
+            ResultSet rst = pstm.executeQuery();
+            while (rst.next()) {
+                tblEmployee.getItems().add(new EmployeeTm(
+                        rst.getString(1),
+                        rst.getString(2),
+                        rst.getString(3),
+                        rst.getString(4),
+                        rst.getString(5),
+                        rst.getString(6),
+                        rst.getString(7)
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
