@@ -133,7 +133,15 @@ public class EmployeeFormController {
 
     @FXML
     void btnClearOnAction() {
-
+        txtEmpId.clear();
+        txtEmpName.clear();
+        txtEmpAddress.clear();
+        txtEmpAge.clear();
+        txtEmpNic.clear();
+        txtEmpContact.clear();
+        txtEmpSalary.clear();
+        txtEmpUserName.clear();
+        txtPassword.clear();
     }
 
     @FXML
