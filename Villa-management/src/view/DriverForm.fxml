@@ -10,6 +10,7 @@
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="724.0" prefWidth="980.0" style="-fx-background-color: white; -fx-background-radius: 15px; -fx-border-radius: 15px;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DriverFormController">
@@ -17,6 +18,14 @@
       <DropShadow height="19.31" radius="6.6674999999999995" spread="0.11" width="9.36" />
    </effect>
    <children>
+      <Pane layoutX="22.0" layoutY="14.0" prefHeight="60.0" prefWidth="942.0" style="-fx-background-color: #32ff7e; -fx-background-radius: 10;">
+         <effect>
+            <DropShadow height="17.49" offsetX="5.0" offsetY="2.0" radius="7.3675" width="13.98">
+               <color>
+                  <Color red="0.7894737124443054" green="0.017543859779834747" blue="0.017543859779834747" />
+               </color>
+            </DropShadow>
+         </effect></Pane>
       <Label layoutX="51.0" layoutY="30.0" text="Driver Form">
          <font>
             <Font size="30.0" />
@@ -27,7 +36,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Separator layoutX="44.0" layoutY="76.0" prefHeight="2.0" prefWidth="905.0" />
+      <Separator layoutX="40.0" layoutY="76.0" prefHeight="2.0" prefWidth="905.0" style="-fx-background-color: red;" />
       <Pane layoutX="152.0" layoutY="91.0" prefHeight="306.0" prefWidth="650.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 3;">
          <effect>
             <DropShadow height="15.15" radius="12.629999999999999" spread="0.15" width="37.37" />

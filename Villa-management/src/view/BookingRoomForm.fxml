@@ -11,6 +11,7 @@
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="724.0" prefWidth="980.0" style="-fx-background-color: white; -fx-background-radius: 15px; -fx-border-radius: 15px;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookingRoomFormController">
@@ -19,6 +20,14 @@
    </effect>
 
    <children>
+      <Pane layoutX="19.0" layoutY="15.0" prefHeight="60.0" prefWidth="942.0" style="-fx-background-color: #32ff7e; -fx-background-radius: 10;">
+         <effect>
+            <DropShadow offsetX="5.0" offsetY="2.0" spread="0.22">
+               <color>
+                  <Color red="0.8736842274665833" />
+               </color>
+            </DropShadow>
+         </effect></Pane>
       <Label layoutX="51.0" layoutY="30.0" text="BookingRoom Form">
          <font>
             <Font size="30.0" />
@@ -29,7 +38,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Separator layoutX="44.0" layoutY="76.0" prefHeight="2.0" prefWidth="905.0" />
+      <Separator layoutX="44.0" layoutY="76.0" prefHeight="2.0" prefWidth="905.0" style="-fx-background-color: red;" />
       <Pane layoutX="92.0" layoutY="103.0" prefHeight="286.0" prefWidth="798.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 3;">
          <effect>
             <DropShadow height="15.15" radius="12.629999999999999" spread="0.15" width="37.37" />
@@ -52,7 +61,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPeice" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404" />
+                  <Label fx:id="lblPeice" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
             <Button layoutX="412.0" layoutY="202.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Save" />
@@ -81,7 +93,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblAvailable" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404" />
+                  <Label fx:id="lblAvailable" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
             <Separator layoutX="96.0" layoutY="164.0" prefWidth="200.0" />
@@ -107,6 +122,9 @@
                      <effect>
                         <Glow />
                      </effect>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
                   </TextField>
                </children>
             </Pane>
@@ -127,7 +145,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblName" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404" />
+                  <Label fx:id="lblName" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
             <Pane layoutX="494.0" layoutY="98.0" prefHeight="60.0" prefWidth="174.0">
@@ -137,7 +158,10 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblContact" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404" />
+                  <Label fx:id="lblContact" layoutX="21.0" layoutY="21.0" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #dcacac;" text="00.00" textFill="#230404">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </Pane>
             <Separator layoutX="494.0" layoutY="164.0" prefWidth="200.0" />

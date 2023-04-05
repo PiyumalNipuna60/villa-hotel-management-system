@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="587.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+<AnchorPane fx:id="LoginAnchorPane" centerShape="false" prefHeight="595.0" prefWidth="919.0" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
    <children>
-      <ImageView fitHeight="604.0" fitWidth="853.0" pickOnBounds="true">
+      <ImageView fitHeight="648.0" fitWidth="920.0" focusTraversable="true" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/image/Login-Design-Example-18.gif" />
          </image>
@@ -22,7 +22,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Pane layoutX="447.0" layoutY="23.0" prefHeight="558.0" prefWidth="358.0" style="-fx-background-color: white; -fx-border-color: #95a5a6;">
+      <Pane layoutX="480.0" layoutY="24.0" prefHeight="555.0" prefWidth="392.0" style="-fx-background-color: white; -fx-border-color: #95a5a6;">
          <effect>
             <DropShadow height="23.34" radius="11.17" width="23.34" />
          </effect>
@@ -47,15 +47,20 @@
                </effect>
             </Button>
             <Label layoutX="97.0" layoutY="511.0" text="Don't have an account ?" />
-            <Label fx:id="txtxSignIn" layoutX="230.0" layoutY="512.0" onDragDetected="#txtSignInOnAction" text="Sign In" textFill="BLUE">
+            <Button layoutX="283.0" layoutY="507.0" mnemonicParsing="false" onAction="#btnSignInOnAction" style="-fx-background-color: white;" text="Sign In" textFill="#0d00c9">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="11.0" />
                </font>
-            </Label>
+            </Button>
          </children>
          <padding>
             <Insets bottom="1.0" right="1.0" top="1.0" />
          </padding>
       </Pane>
+      <ImageView fitHeight="558.0" fitWidth="433.0" layoutX="48.0" layoutY="21.0" pickOnBounds="true">
+         <image>
+            <Image url="@../assets/image/70649f8c96e585332f500ada9df046fe.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
