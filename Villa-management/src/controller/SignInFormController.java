@@ -39,6 +39,14 @@ public class SignInFormController {
     public void btnLoginOnAction(ActionEvent mouseEvent) {
        
     }
+    
+        //----------------------existCustomer--------------------------------------------------------------
+    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT empId FROM employee WHERE empId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 
 
 }
