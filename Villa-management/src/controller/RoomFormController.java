@@ -1,45 +1,60 @@
 package controller;
 
+import Entity.Room;
+import db.DBConnection;
+import dto.RoomDTO;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.util.Duration;
+import tm.RoomTM;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class RoomFormController {
 
     @FXML
-    private ComboBox<?> cmbRoomAvailable;
+    private ComboBox cmbRoomAvailable;
 
     @FXML
-    private ComboBox<?> cmbRoomDescrition;
+    private ComboBox cmbRoomDescrition;
 
     @FXML
-    private ComboBox<?> cmbRoomType;
+    private ComboBox cmbRoomType;
 
     @FXML
-    private TableColumn<?, ?> colAvailable;
+    private TableColumn colAvailable;
 
     @FXML
-    private TableColumn<?, ?> colDescription;
+    private TableColumn colDescription;
 
     @FXML
-    private TableColumn<?, ?> colId;
+    private TableColumn colId;
 
     @FXML
-    private TableColumn<?, ?> colPrice;
+    private TableColumn colPrice;
 
     @FXML
-    private TableColumn<?, ?> colType;
+    private TableColumn colType;
 
     @FXML
     private Label lblDate;
 
     @FXML
-    private TableView<?> tblRoom;
+    private TableView<RoomTM> tblRoom;
 
     @FXML
     private TextField txtRoomId;
@@ -57,7 +72,6 @@ public class RoomFormController {
         LoadAllCustomer();
         generateRealTime();
         loadComboBox();
-
     }
 
     private void loadComboBox() {
@@ -84,17 +98,17 @@ public class RoomFormController {
     private void LoadAllCustomer() {
         tblRoom.getItems().clear();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from room");
-            ResultSet rst = pstm.executeQuery();
-            while (rst.next()) {
-                tblRoom.getItems().add(new RoomTM(
-                        rst.getString(1),
-                        rst.getString(2),
-                        rst.getString(3),
-                        rst.getString(4),
-                        rst.getString(5)
-                ));
+            Room room = new Room();
+            ArrayList<RoomTM> all = room.getAll();
+            for (RoomTM tm : all) {
+                tblRoom.getItems().add(
+                        new RoomTM(
+                                tm.getRoomId(),
+                                tm.getType(),
+                                tm.getDescription(),
+                                tm.getAvailable(),
+                                tm.getPrice()
+                        ));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -105,16 +119,17 @@ public class RoomFormController {
     void SearchOnKeyPress(KeyEvent event) {
         String id = txtRoomId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from room where roomId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
+            if (!existRoom(id)) {
 
-            if (rst.next()) {
-                cmbRoomType.setValue(rst.getString(2));
-                cmbRoomDescrition.setValue(rst.getString(3));
-                cmbRoomAvailable.setValue(rst.getString(4));
-                txtRoomPrice.setText(rst.getString(5));
+            } else {
+                Room room = new Room();
+                ResultSet rst = room.search(id);
+                if (rst.next()) {
+                    cmbRoomType.setValue(rst.getString(2));
+                    cmbRoomDescrition.setValue(rst.getString(3));
+                    cmbRoomAvailable.setValue(rst.getString(4));
+                    txtRoomPrice.setText(rst.getString(5));
+                }
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -133,11 +148,9 @@ public class RoomFormController {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("DELETE FROM room WHERE roomId=?");
-            pstm.setString(1, txtRoomId.getText());
-            boolean b = pstm.executeUpdate() > 0;
-            if (b) {
+            Room room = new Room();
+            boolean delete = room.delete(txtRoomId.getText());
+            if (delete) {
                 new Alert(Alert.AlertType.INFORMATION, "employee  " + txtRoomId.getText() + " Deleted..!").show();
                 btnClearOnAction();
                 LoadAllCustomer();
@@ -154,26 +167,25 @@ public class RoomFormController {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         String id = txtRoomId.getText();
-        Object type = cmbRoomType.getValue();
-        Object description = cmbRoomAvailable.getValue();
-        Object available = cmbRoomAvailable.getValue();
+        String type = String.valueOf(cmbRoomType.getValue());
+        String description = String.valueOf(cmbRoomAvailable.getValue());
+        String available = String.valueOf(cmbRoomAvailable.getValue());
         String price = txtRoomPrice.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("INSERT INTO room VALUES (?,?,?,?,?)");
-            pstm.setString(1, id);
-            pstm.setString(2, String.valueOf(type));
-            pstm.setString(3, String.valueOf(description));
-            pstm.setString(4, String.valueOf(available));
-            pstm.setString(5, price);
-            boolean save = pstm.executeUpdate() > 0;
-            if (save) {
-                new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
-                LoadAllCustomer();
-                btnClearOnAction();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            if (!existRoom(id)) {
+                Room room = new Room();
+                boolean save = room.save(new RoomDTO(id, type, description, available, price));
+                if (save) {
+                    new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
+                    LoadAllCustomer();
+                    btnClearOnAction();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                }
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Duplicate Entry..!").show();
             }
+
 
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -187,14 +199,11 @@ public class RoomFormController {
     void btnSearchOnAction(ActionEvent event) {
         String id = txtRoomId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from room where roomId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
-
             if (!existRoom(id)) {
                 new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
             } else {
+                Room room = new Room();
+                ResultSet rst = room.search(id);
                 if (rst.next()) {
                     cmbRoomType.setValue(rst.getString(2));
                     cmbRoomDescrition.setValue(rst.getString(3));
@@ -210,20 +219,14 @@ public class RoomFormController {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         String id = txtRoomId.getText();
-        Object type = cmbRoomType.getValue();
-        Object description = cmbRoomDescrition.getValue();
-        Object available = cmbRoomAvailable.getValue();
+        String type = String.valueOf(cmbRoomType.getValue());
+        String description = String.valueOf(cmbRoomDescrition.getValue());
+        String available = String.valueOf(cmbRoomAvailable.getValue());
         String price = txtRoomPrice.getText();
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE room SET type=?, description=?,available=?,price=? WHERE roomId=?");
-            pstm.setString(5, id);
-            pstm.setString(1, String.valueOf(type));
-            pstm.setString(2, String.valueOf(description));
-            pstm.setString(3, String.valueOf(available));
-            pstm.setString(4, price);
-            boolean update = pstm.executeUpdate() > 0;
+            Room room = new Room();
+            boolean update = room.update(new RoomDTO(id, type, description, available, price));
             if (update) {
                 new Alert(Alert.AlertType.INFORMATION, id + " Room Updated..!").show();
                 btnClearOnAction();
@@ -254,4 +257,5 @@ public class RoomFormController {
         pstm.setString(1, id);
         return pstm.executeQuery().next();
     }
+
 }

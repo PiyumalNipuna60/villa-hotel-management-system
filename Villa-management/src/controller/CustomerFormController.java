@@ -1,6 +1,8 @@
 package controller;
 
+import Entity.Customer;
 import db.DBConnection;
+import dto.CustomerDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,18 +13,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import view.tm.CustomerTm;
+import javafx.util.Duration;
+import tm.BookingRoomTM;
+import tm.CustomerTm;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javafx.util.Duration;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class CustomerFormController {
 
@@ -131,19 +133,20 @@ public class CustomerFormController {
     private void LoadAllCustomer() {
         tblCustomer.getItems().clear();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from customer");
-            ResultSet rst = pstm.executeQuery();
-            while (rst.next()) {
-                tblCustomer.getItems().add(new CustomerTm(
-                        rst.getString("cusId"),
-                        rst.getString("name"),
-                        rst.getString("address"),
-                        rst.getString("dob"),
-                        rst.getString("Nic"),
-                        rst.getString("Contact"),
-                        rst.getString("sex"),
-                        rst.getString("safaryId")));
+            Customer customer = new Customer();
+            ArrayList<CustomerTm> alls = customer.getAll();
+            for (CustomerTm all : alls) {
+                tblCustomer.getItems().add(
+                        new CustomerTm(
+                                all.getCusId(),
+                                all.getName(),
+                                all.getAddress(),
+                                all.getDob(),
+                                all.getNic(),
+                                all.getContact(),
+                                all.getSex(),
+                                all.getSafaryId()
+                        ));
             }
 
 
@@ -164,11 +167,9 @@ public class CustomerFormController {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE cusId=?");
-            pstm.setString(1, txtCusId.getText());
-            boolean b = pstm.executeUpdate() > 0;
-            if (b) {
+            Customer customer = new Customer();
+            boolean delete = customer.delete(txtCusId.getText());
+            if (delete) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer " + txtCusId.getText() + " Delete..!").show();
                 LoadAllCustomer();
                 btnClearOnAction();
@@ -178,7 +179,6 @@ public class CustomerFormController {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @FXML
@@ -186,12 +186,12 @@ public class CustomerFormController {
         String Id = txtCusId.getText();
         String name = txtCusName.getText();
         String address = txtCusAddress.getText();
-        LocalDate dob = txtDob.getValue();
+        String dob = String.valueOf(txtDob.getValue());
         String nic = txtCusNic.getText();
         String contact = txtContact.getText();
         String gender;
-        Object safaryId = cmbSafaryid.getValue();
-        Object safaryType = cmbSafaryType.getValue();
+        String safaryId = String.valueOf(cmbSafaryid.getValue());
+        String safaryType = String.valueOf(cmbSafaryType.getValue());
 
         if (rbnMale.isSelected()) {
             gender = "Male";
@@ -202,20 +202,9 @@ public class CustomerFormController {
 
         try {
             if (!existCustomer(Id)) {
-                Connection connection = DBConnection.getInstance().getConnection();
-                PreparedStatement pstm = connection.prepareStatement("Insert into Customer Values (?,?,?,?,?,?,?,?,?)");
-                pstm.setString(1, Id);
-                pstm.setString(2, name);
-                pstm.setString(3, address);
-                pstm.setString(4, String.valueOf(dob));
-                pstm.setString(5, nic);
-                pstm.setString(6, contact);
-                pstm.setString(7, gender);
-                pstm.setString(8, String.valueOf(safaryId));
-                pstm.setString(9, String.valueOf(safaryType));
-                boolean x = pstm.executeUpdate() > 0;
-
-                if (x) {
+                Customer customer = new Customer();
+                boolean save = customer.save(new CustomerDTO(Id, name, address, dob, nic, contact, gender, safaryId, safaryType));
+                if (save) {
                     new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Saved..!").show();
                     LoadAllCustomer();
                     btnClearOnAction();
@@ -225,45 +214,38 @@ public class CustomerFormController {
             } else {
                 new Alert(Alert.AlertType.ERROR, "Customer Id Already Add..!").show();
             }
-
-
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @FXML
     void btnSearchOnAction() {
         String id = txtCusId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from customer where cusId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
-
             if (!existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, id + " Safary Not Register..!").show();
             } else {
-                if (rst.next()) {
-                    txtCusId.setText(rst.getString(1));
-                    txtCusName.setText(rst.getString(2));
-                    txtCusAddress.setText(rst.getString(3));
-                    System.out.println(rst.getString(4));
-                    txtDob.setValue(LocalDate.parse(rst.getString(4)));
-                    txtCusNic.setText(rst.getString(5));
-                    txtContact.setText(rst.getString(6));
-                    String value = rst.getString(7);
-                    System.out.println(value);
-                    if (value.equals("Male")) {
-                        rbnMale.setSelected(true);
-                    } else {
-                        rbnFemale.setSelected(true);
-                    }
+                Customer customer = new Customer();
+                CustomerDTO search = customer.search(id);
 
-                    cmbSafaryid.setValue(rst.getObject(8));
-                    cmbSafaryType.setValue(rst.getObject(9));
+                txtCusId.setText(search.getCusId());
+                txtCusName.setText(search.getName());
+                txtCusAddress.setText(search.getAddress());
+                txtDob.setValue(LocalDate.parse(search.getDob()));
+                txtCusNic.setText(search.getNic());
+                txtContact.setText(search.getContact());
+                String value = search.getSex();
+                System.out.println(value);
+                if (value.equals("Male")) {
+                    rbnMale.setSelected(true);
+                } else {
+                    rbnFemale.setSelected(true);
                 }
+
+                cmbSafaryid.setValue(search.getSafaryId());
+                cmbSafaryType.setValue(search.getSafaryType());
+
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -276,12 +258,12 @@ public class CustomerFormController {
         String Id = txtCusId.getText();
         String name = txtCusName.getText();
         String address = txtCusAddress.getText();
-        LocalDate dob = txtDob.getValue();
+        String dob = String.valueOf(txtDob.getValue());
         String nic = txtCusNic.getText();
         String contact = txtContact.getText();
         String gender;
-        Object safaryId = cmbSafaryid.getValue();
-        Object safaryType = cmbSafaryType.getValue();
+        String safaryId = String.valueOf(cmbSafaryid.getValue());
+        String safaryType = String.valueOf(cmbSafaryType.getValue());
 
         if (rbnMale.isSelected()) {
             gender = "Male";
@@ -290,20 +272,9 @@ public class CustomerFormController {
         }
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=?,dob=?,nic=?,contact=?,sex=?,safaryId=?,type=? WHERE cusId=?");
-            pstm.setString(1, name);
-            pstm.setString(2, address);
-            pstm.setString(3, String.valueOf(dob));
-            pstm.setString(4, nic);
-            pstm.setString(5, contact);
-            pstm.setString(6, gender);
-            pstm.setString(7, String.valueOf(safaryId));
-            pstm.setString(8, String.valueOf(safaryType));
-            pstm.setString(9, Id);
-            boolean x = pstm.executeUpdate() > 0;
-
-            if (x) {
+            Customer customer = new Customer();
+            boolean update = customer.update(new CustomerDTO(Id, name, address, dob, nic, contact, gender, safaryId, safaryType));
+            if (update) {
                 new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Update..!").show();
                 LoadAllCustomer();
                 btnClearOnAction();
@@ -320,20 +291,19 @@ public class CustomerFormController {
     public void SearchOnKeyPress(KeyEvent keyEvent) {
         String id = txtCusId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from customer where cusId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
+            if (!existCustomer(id)) {
 
-            if (rst.next()) {
-                txtCusId.setText(rst.getString(1));
-                txtCusName.setText(rst.getString(2));
-                txtCusAddress.setText(rst.getString(3));
-                System.out.println(rst.getString(4));
-                txtDob.setValue(LocalDate.parse(rst.getString(4)));
-                txtCusNic.setText(rst.getString(5));
-                txtContact.setText(rst.getString(6));
-                String value = rst.getString(7);
+            } else {
+                Customer customer = new Customer();
+                CustomerDTO search = customer.search(id);
+
+                txtCusId.setText(search.getCusId());
+                txtCusName.setText(search.getName());
+                txtCusAddress.setText(search.getAddress());
+                txtDob.setValue(LocalDate.parse(search.getDob()));
+                txtCusNic.setText(search.getNic());
+                txtContact.setText(search.getContact());
+                String value = search.getSex();
                 System.out.println(value);
                 if (value.equals("Male")) {
                     rbnMale.setSelected(true);
@@ -341,8 +311,9 @@ public class CustomerFormController {
                     rbnFemale.setSelected(true);
                 }
 
-                cmbSafaryid.setValue(rst.getObject(8));
-                cmbSafaryType.setValue(rst.getObject(9));
+                cmbSafaryid.setValue(search.getSafaryId());
+                cmbSafaryType.setValue(search.getSafaryType());
+
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

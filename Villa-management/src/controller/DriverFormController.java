@@ -1,6 +1,8 @@
 package controller;
 
+import Entity.driver;
 import db.DBConnection;
+import dto.DriverDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -10,8 +12,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import view.tm.CustomerTm;
-import view.tm.driverTm;
+import tm.CustomerTm;
+import tm.driverTm;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class DriverFormController {
 
@@ -67,15 +70,16 @@ public class DriverFormController {
     private void LoadAllCustomer() {
         tblCustomer.getItems().clear();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from driver");
-            ResultSet rst = pstm.executeQuery();
-            while (rst.next()) {
-                tblCustomer.getItems().add(new driverTm(
-                        rst.getString(1),
-                        rst.getString(2),
-                        rst.getString(3),
-                        rst.getString(4)));
+            driver d1 = new driver();
+            ArrayList<driverTm> alls = d1.getAll();
+            for (driverTm all : alls) {
+                tblCustomer.getItems().add(
+                        new driverTm(
+                                all.getDriverId(),
+                                all.getDriverName(),
+                                all.getAddress(),
+                                all.getContact()
+                        ));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -86,17 +90,15 @@ public class DriverFormController {
     void SearchOnKeyPress(KeyEvent event) {
         String id = txtCusId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from driver where driverId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
+            driver d1 = new driver();
+            DriverDTO search = d1.search(id);
+            if (search == null) {
 
-            if (rst.next()) {
-                txtCusAddress.setText(rst.getString(3));
-                txtCusName.setText(rst.getString(2));
-                txtCusContact.setText(rst.getString(4));
+            } else {
+                txtCusAddress.setText(search.getAddress());
+                txtCusName.setText(search.getDriverName());
+                txtCusContact.setText(search.getContact());
             }
-
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -113,11 +115,9 @@ public class DriverFormController {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("DELETE FROM driver WHERE driverId=?");
-            pstm.setString(1, txtCusId.getText());
-            boolean b = pstm.executeUpdate() > 0;
-            if (b) {
+            driver d1 = new driver();
+            boolean delete = d1.delete(txtCusId.getText());
+            if (delete) {
                 new Alert(Alert.AlertType.INFORMATION, "Driver  " + txtCusId.getText() + " Deleted..!").show();
                 btnClearOnAction();
                 LoadAllCustomer();
@@ -137,14 +137,10 @@ public class DriverFormController {
         String contact = txtCusContact.getText();
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("INSERT INTO driver VALUES (?,?,?,?)");
-            pstm.setString(1, id);
-            pstm.setString(2, name);
-            pstm.setString(3, address);
-            pstm.setString(4, contact);
-            boolean update = pstm.executeUpdate() > 0;
-            if (update) {
+            driver driver = new driver();
+            boolean save = driver.save(new DriverDTO(id, name, address, contact));
+
+            if (save) {
                 new Alert(Alert.AlertType.INFORMATION, id + " Driver Added..!").show();
                 LoadAllCustomer();
                 btnClearOnAction();
@@ -160,19 +156,14 @@ public class DriverFormController {
     void btnSearchOnAction() {
         String id = txtCusId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from driver where driverId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
-
-            if (!existCustomer(id)) {
-                new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
+            driver d1 = new driver();
+            DriverDTO search = d1.search(id);
+            if (search == null) {
+                new Alert(Alert.AlertType.ERROR, id+" Not System..!").show();
             } else {
-                if (rst.next()) {
-                    txtCusAddress.setText(rst.getString(3));
-                    txtCusName.setText(rst.getString(2));
-                    txtCusContact.setText(rst.getString(4));
-                }
+                txtCusAddress.setText(search.getAddress());
+                txtCusName.setText(search.getDriverName());
+                txtCusContact.setText(search.getContact());
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -187,13 +178,8 @@ public class DriverFormController {
         String contact = txtCusContact.getText();
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE driver SET driverName=?, address=?,contact=? WHERE driverId=?");
-            pstm.setString(4, id);
-            pstm.setString(1, name);
-            pstm.setString(2, address);
-            pstm.setString(3, contact);
-            boolean update = pstm.executeUpdate() > 0;
+            driver driver = new driver();
+            boolean update = driver.update(new DriverDTO(id, name, address, contact));
             if (update) {
                 new Alert(Alert.AlertType.INFORMATION, id + " Driver Updated..!").show();
                 btnClearOnAction();

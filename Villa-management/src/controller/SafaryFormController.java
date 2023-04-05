@@ -1,6 +1,10 @@
 package controller;
 
+import Entity.Safary;
+import Entity.driver;
 import db.DBConnection;
+import dto.DriverDTO;
+import dto.SafaryDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,8 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import view.tm.RoomTM;
-import view.tm.SafaryTm;
+import tm.SafaryTm;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +25,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class SafaryFormController {
     @FXML
@@ -141,49 +145,45 @@ public class SafaryFormController {
     private void LoadAllCustomer() {
         tblSafary.getItems().clear();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select safary.safaryId,safary.type,safary.date,safary.time,safary.driverId,driver.driverName,driver.contact FROM safary LEFT JOIN driver ON safary.driverId=driver.driverId");
-            ResultSet rst = pstm.executeQuery();
-            while (rst.next()) {
-                tblSafary.getItems().add(new SafaryTm(
-                        rst.getString(1),
-                        rst.getString(2),
-                        rst.getString(3),
-                        rst.getString(4),
-                        rst.getString(5),
-                        rst.getString(6),
-                        rst.getString(7)
-                ));
+            Safary safary = new Safary();
+            ArrayList<SafaryTm> all = safary.getAll();
+            for (SafaryTm tm:all) {
+                tblSafary.getItems().add(
+                  new SafaryTm(
+                          tm.getSafaryId(),
+                          tm.getType(),
+                          tm.getDate(),
+                          tm.getTime(),
+                          tm.getDriverId(),
+                          tm.getDriverName(),
+                          tm.getDriverContact()
+                  )
+                );
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @FXML
     void SearchOnKeyPress(KeyEvent event) {
         String id = txtSafaryId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from safary where safaryId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
+            Safary safary = new Safary();
+            SafaryDTO search1 = safary.search(id);
 
-                if (rst.next()) {
-                    cmbSafaryType.setValue(rst.getString(2));
-                    txtDate.setValue(LocalDate.parse(rst.getString(3)));
-                    txtTime.setText(rst.getString(4));
-                    cmbDriverId.setValue(rst.getString(5));
+            if (search1!=null) {
+                    cmbSafaryType.setValue(search1.getType());
+                    txtDate.setValue(LocalDate.parse(search1.getDate()));
+                    txtTime.setText(search1.getTime());
+                    cmbDriverId.setValue(search1.getDriverId());
 
+                    driver driver = new driver();
+                    DriverDTO search = driver.search(search1.getDriverId());
 
-                    PreparedStatement pstm2 = connection.prepareStatement("select*from driver where driverId=?");
-                    pstm2.setString(1, (rst.getString(5)));
-                    ResultSet rst2 = pstm2.executeQuery();
-
-                    if (rst2.next()){
-                        lblDriverName.setText(rst2.getString(2));
-                        lblDriverContct.setText(rst2.getString(4));
+                    if (search!=null){
+                        lblDriverName.setText(search.getDriverName());
+                        lblDriverContct.setText(search.getContact());
                     }
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -195,8 +195,8 @@ public class SafaryFormController {
     void btnClearOnAction() {
         txtTime.clear();
         txtSafaryId.clear();
-        cmbDriverId.getItems().clear();
-        cmbSafaryType.getItems().clear();
+        cmbDriverId.getSelectionModel().clearSelection();
+        cmbSafaryType.getSelectionModel().clearSelection();
         lblDriverName.setText("");
         lblDriverContct.setText("");
     }
@@ -204,11 +204,9 @@ public class SafaryFormController {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("DELETE FROM safary WHERE safaryId=?");
-            pstm.setString(1, txtSafaryId.getText());
-            boolean b = pstm.executeUpdate() > 0;
-            if (b) {
+            Safary safary = new Safary();
+            boolean delete = safary.delete(txtSafaryId.getText());
+            if (delete) {
                 new Alert(Alert.AlertType.INFORMATION, "Safary  " + txtSafaryId.getText() + " Deleted..!").show();
                 btnClearOnAction();
                 LoadAllCustomer();
@@ -223,20 +221,14 @@ public class SafaryFormController {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         String id = txtSafaryId.getText();
-        Object type = cmbSafaryType.getValue();
-        LocalDate date = txtDate.getValue();
+        String type = String.valueOf(cmbSafaryType.getValue());
+        String date = String.valueOf(txtDate.getValue());
         String time = txtTime.getText();
-        Object driverId = cmbDriverId.getValue();
+        String driverId = String.valueOf(cmbDriverId.getValue());
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("INSERT INTO safary VALUES (?,?,?,?,?)");
-            pstm.setString(1, id);
-            pstm.setString(2, String.valueOf(type));
-            pstm.setString(3, String.valueOf(date));
-            pstm.setString(4, time);
-            pstm.setString(5, String.valueOf(driverId));
-            boolean save = pstm.executeUpdate() > 0;
+            Safary safary = new Safary();
+            boolean save = safary.save(new SafaryDTO(id, type, date, time, driverId));
             if (save) {
                 new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
                 LoadAllCustomer();
@@ -255,30 +247,24 @@ public class SafaryFormController {
     void btnSearchOnAction(ActionEvent event) {
         String id = txtSafaryId.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from safary where safaryId=?");
-            pstm.setString(1, id);
-            ResultSet rst = pstm.executeQuery();
+            Safary safary = new Safary();
+            SafaryDTO search1 = safary.search(id);
 
-            if (!existRoom(id)) {
-                new Alert(Alert.AlertType.ERROR, id + " Safary Not Register..!").show();
-            } else {
-                if (rst.next()) {
-                    cmbSafaryType.setValue(rst.getString(2));
-                    txtDate.setValue(LocalDate.parse(rst.getString(3)));
-                    txtTime.setText(rst.getString(4));
-                    cmbDriverId.setValue(rst.getString(5));
+            if (search1!=null) {
+                cmbSafaryType.setValue(search1.getType());
+                txtDate.setValue(LocalDate.parse(search1.getDate()));
+                txtTime.setText(search1.getTime());
+                cmbDriverId.setValue(search1.getDriverId());
 
+                driver driver = new driver();
+                DriverDTO search = driver.search(search1.getDriverId());
 
-                    PreparedStatement pstm2 = connection.prepareStatement("select*from driver where driverId=?");
-                    pstm2.setString(1, (rst.getString(5)));
-                    ResultSet rst2 = pstm2.executeQuery();
-
-                    if (rst2.next()){
-                        lblDriverName.setText(rst2.getString(2));
-                        lblDriverContct.setText(rst2.getString(4));
-                    }
+                if (search!=null){
+                    lblDriverName.setText(search.getDriverName());
+                    lblDriverContct.setText(search.getContact());
                 }
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Safary id not Register..!").show();
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -288,20 +274,14 @@ public class SafaryFormController {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         String id = txtSafaryId.getText();
-        Object type = cmbSafaryType.getValue();
-        LocalDate date = txtDate.getValue();
+        String type = String.valueOf(cmbSafaryType.getValue());
+        String date = String.valueOf(txtDate.getValue());
         String time = txtTime.getText();
-        Object driverId = cmbDriverId.getValue();
+        String driverId = String.valueOf(cmbDriverId.getValue());
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE safary SET type=?, date=?,time=?,driverId=? WHERE safaryId=?");
-            pstm.setString(5, id);
-            pstm.setString(1, String.valueOf(type));
-            pstm.setString(2, String.valueOf(date));
-            pstm.setString(3, time);
-            pstm.setString(4, String.valueOf(driverId));
-            boolean update = pstm.executeUpdate() > 0;
+            Safary safary = new Safary();
+            boolean update = safary.update(new SafaryDTO(id, type, date, time, driverId));
             if (update) {
                 new Alert(Alert.AlertType.INFORMATION, id + " Safary Updated..!").show();
                 btnClearOnAction();
@@ -323,15 +303,6 @@ public class SafaryFormController {
         }), new KeyFrame(Duration.seconds(1)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT safaryId FROM safary WHERE safaryId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
     }
 
 }

@@ -1,6 +1,10 @@
 package controller;
 
+import Entity.BookingRoom;
+import Entity.RoomDetails;
 import db.DBConnection;
+import dto.BookingRoomDTO;
+import dto.RoomDetailsDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,16 +15,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
-import view.tm.BookingRoomTM;
-import view.tm.SafaryTm;
+import tm.BookingRoomTM;
+import util.CrudUtil;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class BookingRoomFormController {
 
@@ -206,23 +211,24 @@ public class BookingRoomFormController {
     }
 
     private void LoadAllCustomer() {
-        tblCustomer.getItems().clear();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("SELECT customer.cusId,customer.name,customer.contact,room.roomId,room.type,room.price,roomDetails.paymentType,roomDetails.payment,(room.price-roomDetails.payment) FROM customer JOIN roomDetails ON customer.cusId = roomDetails.cusId JOIN room ON room.roomId= roomDetails.roomId;");
-            ResultSet rst = pstm.executeQuery();
-            while (rst.next()) {
-                tblCustomer.getItems().add(new BookingRoomTM(
-                        rst.getString(1),
-                        rst.getString(2),
-                        rst.getString(3),
-                        rst.getString(4),
-                        rst.getString(5),
-                        rst.getString(6),
-                        rst.getString(7),
-                        rst.getString(8),
-                        rst.getString(9)
-                ));
+            tblCustomer.getItems().clear();
+            BookingRoom bookingRoom = new BookingRoom();
+            ArrayList<BookingRoomTM> all = bookingRoom.getAll();
+
+            for (BookingRoomTM booking : all) {
+                tblCustomer.getItems().add(
+                        new BookingRoomTM(
+                                booking.getCusId(),
+                                booking.getCusName(),
+                                booking.getContact(),
+                                booking.getRoomId(),
+                                booking.getRoomType(),
+                                booking.getRoomPrice(),
+                                booking.getPaymentType(),
+                                booking.getPayment(),
+                                booking.getCash()
+                        ));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -242,13 +248,9 @@ public class BookingRoomFormController {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("DELETE FROM roomDetails WHERE roomId=? && cusId=?");
-            pstm.setString(1, String.valueOf(cmbRoomId.getValue()));
-            pstm.setString(1, String.valueOf(cmbCustomerId.getValue()));
-
-            boolean b = pstm.executeUpdate() > 0;
-            if (b) {
+            BookingRoom bookingRoom = new BookingRoom();
+            boolean delete = bookingRoom.delete(String.valueOf(cmbRoomId.getValue()), String.valueOf(cmbCustomerId.getValue()));
+            if (delete) {
                 new Alert(Alert.AlertType.INFORMATION, "Room  " + cmbRoomId.getValue() + " Booking Deleted..!").show();
                 btnClearOnAction();
                 LoadAllCustomer();
@@ -262,19 +264,14 @@ public class BookingRoomFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        Object roomId =cmbRoomId.getValue();
-        Object cusId = cmbCustomerId.getValue();
-        Object paymentType = cmbPaymentType.getValue();
+        String roomId = String.valueOf(cmbRoomId.getValue());
+        String cusId = String.valueOf(cmbCustomerId.getValue());
+        String paymentType = String.valueOf(cmbPaymentType.getValue());
         String payment = txtPayment.getText();
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("INSERT INTO roomDetails VALUES (?,?,?,?)");
-            pstm.setString(1, String.valueOf(roomId));
-            pstm.setString(2, String.valueOf(cusId));
-            pstm.setString(3, String.valueOf(paymentType));
-            pstm.setString(4, payment);
-            boolean save = pstm.executeUpdate() > 0;
+        BookingRoom bookingRoom = new BookingRoom();
+            boolean save = bookingRoom.save(new RoomDetailsDTO(roomId, cusId, paymentType, payment));
             if (save) {
                 new Alert(Alert.AlertType.INFORMATION, roomId + " Room "+cusId+" ..!").show();
                 LoadAllCustomer();
@@ -330,19 +327,14 @@ public class BookingRoomFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        Object roomId =cmbRoomId.getValue();
-        Object cusId = cmbCustomerId.getValue();
-        Object paymentType = cmbPaymentType.getValue();
+        String roomId = String.valueOf(cmbRoomId.getValue());
+        String cusId = String.valueOf(cmbCustomerId.getValue());
+        String paymentType = String.valueOf(cmbPaymentType.getValue());
         String payment = txtPayment.getText();
 
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE roomDetails SET paymentType=?, payment=? WHERE roomId=? && cusId=?");
-            pstm.setString(3, String.valueOf(roomId));
-            pstm.setString(4, String.valueOf(cusId));
-            pstm.setString(1, String.valueOf(paymentType));
-            pstm.setString(2, payment);
-            boolean update = pstm.executeUpdate() > 0;
+            BookingRoom bookingRoom = new BookingRoom();
+            boolean update = bookingRoom.update(new RoomDetailsDTO(roomId, cusId, paymentType, payment));
             if (update) {
                 new Alert(Alert.AlertType.INFORMATION, "Room  " + roomId + " Booking Update..!").show();
                 btnClearOnAction();
@@ -350,16 +342,30 @@ public class BookingRoomFormController {
             } else {
                 new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
             }
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-
+    private void generateRealTime() {
+        //lblDate.setText(LocalDate.now().toString());
+        Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+            lblDate.setText(LocalDateTime.now().format(formatter));
+        }), new KeyFrame(Duration.seconds(1)));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
 
     //----------------------existCustomer--------------------------------------------------------------
-
+    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT cusId FROM roomDetails WHERE cusId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
+    }
 
 }
