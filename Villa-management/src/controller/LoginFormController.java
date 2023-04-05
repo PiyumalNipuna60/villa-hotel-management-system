@@ -19,12 +19,17 @@ import java.sql.SQLException;
 
 public class LoginFormController {
 
+    public AnchorPane LoginAnchorPane;
+    @FXML
     private PasswordField txtPassword;
 
+    @FXML
     private TextField txtUserName;
 
+    @FXML
     private Label txtxSignIn;
 
+    @FXML
     void btnLoginOnAction(ActionEvent event) {
 
         try {
@@ -34,7 +39,7 @@ public class LoginFormController {
                     System.out.println("AdminDashBoardForm");
                     setUi("AdminDashBoardForm");
             }else {
-                System.out.println("AdminDashBoardForm");
+                new Alert(Alert.AlertType.ERROR,"Something Wrong..!" ).show();
             }
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -52,18 +57,24 @@ public class LoginFormController {
 
     public void setUi(String url){
         try {
-            Stage primaryStage=new Stage();
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("../view/"+url+".fxml")));
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/"+url+".fxml"));
+                Parent parent = loader.load();
+                Scene scene=new Scene(parent);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+                Stage stage1= (Stage)LoginAnchorPane.getScene().getWindow();
+                stage1.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    void txtSignInOnAction(MouseEvent event) {
+    @FXML
+    void btnSignInOnAction(ActionEvent event) {
+        System.out.println("SignIn");
+
+       setUi("SignInForm");
 
     }
-
 }
