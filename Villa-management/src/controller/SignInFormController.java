@@ -37,6 +37,18 @@ public class SignInFormController {
     }
 
     public void btnLoginOnAction(ActionEvent mouseEvent) {
+     try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/LoginForm.fxml"));
+            Parent parent = loader.load();
+            Scene scene=new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            Stage stage1= (Stage)MainAnchorPane.getScene().getWindow();
+            stage1.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
        
     }
     
