@@ -33,7 +33,31 @@ public class SignInFormController {
     public AnchorPane MainAnchorPane;
 
     public void btnSignInAction(ActionEvent actionEvent) {
-     
+        String id = txtEmpId.getText();
+        String name = txtEmpName.getText();
+        String address = txtEmpAddress.getText();
+        String age = txtEmpAge.getText();
+        String nic = txtEmpNic.getText();
+        String contact = txtEmpContact.getText();
+        String salary = txtEmpSalary.getText();
+        String userName = txtEmpUsername.getText();
+        String password = txtPassword.getText();
+
+        try {
+            if (!existCustomer(id)) {
+                Employee employee = new Employee();
+                boolean save = employee.save(new EmployeeDTO(id, name, address, age, nic, contact, salary, userName, password));
+                if (save) {
+                    new Alert(Alert.AlertType.INFORMATION, id + " Employee Added..!").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Employee Id Already Add..!").show();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnLoginOnAction(ActionEvent mouseEvent) {
