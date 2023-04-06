@@ -29,7 +29,7 @@
             </Label>
             <Pane layoutX="14.0" layoutY="239.0" onDragDetected="#btnCustomerOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="5.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnCustomerOnAction" prefHeight="35.0" prefWidth="191.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Customer" textAlignment="CENTER" underline="true">
+                  <Button layoutX="33.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnCustomerOnAction" prefHeight="35.0" prefWidth="175.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Customer" textAlignment="CENTER" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -46,7 +46,7 @@
             </Pane>
             <Pane layoutX="14.0" layoutY="291.0" onDragDetected="#btnEmployeeOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="6.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnEmployeeOnAction" prefHeight="35.0" prefWidth="192.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Employee" underline="true">
+                  <Button layoutX="37.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnEmployeeOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Employee" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -63,7 +63,7 @@
             </Pane>
             <Pane layoutX="14.0" layoutY="538.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="7.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnRoomOnAction" prefHeight="35.0" prefWidth="181.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Room" underline="true">
+                  <Button layoutX="15.0" layoutY="2.0" mnemonicParsing="false" onAction="#btnRoomOnAction" prefHeight="35.0" prefWidth="181.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Room" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -80,7 +80,7 @@
             </Pane>
             <Pane layoutX="14.0" layoutY="391.0" onDragDetected="#btnDriverOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="8.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnDriverOnActions" prefHeight="35.0" prefWidth="185.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Driver" underline="true">
+                  <Button layoutX="14.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnDriverOnActions" prefHeight="35.0" prefWidth="185.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage Driver" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -97,7 +97,7 @@
             </Pane>
             <Pane layoutX="14.0" layoutY="441.0" onDragDetected="#btnSafaryOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="4.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnSafaryOnAction" prefHeight="35.0" prefWidth="191.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage safary" underline="true">
+                  <Button layoutX="11.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnSafaryOnAction" prefHeight="35.0" prefWidth="191.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Manage safary" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -112,9 +112,9 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane layoutX="14.0" layoutY="489.0" onDragDetected="#btnMeelPlanOnAction" prefHeight="44.0" prefWidth="200.0">
+            <Pane layoutX="14.0" layoutY="489.0" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="6.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnMeelPlanOnAction" prefHeight="35.0" prefWidth="189.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Meal plan" underline="true">
+                  <Button layoutX="24.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnBillPlanOnAction" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Bill" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -122,7 +122,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="10.0" layoutY="5.0" onDragDetected="#btnMeelPlanOnAction" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="10.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/icon/diet.png" />
                      </image>
@@ -148,7 +148,7 @@
             </Pane>
             <Pane layoutX="14.0" layoutY="340.0" onDragDetected="#btnRoomOnAction" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="7.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnBookingRoomOnAction" onDragDetected="#btnRoomOnAction" prefHeight="35.0" prefWidth="185.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Booking Room" underline="true">
+                  <Button layoutX="16.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnBookingRoomOnAction" onDragDetected="#btnRoomOnAction" prefHeight="35.0" prefWidth="185.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Booking Room" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -165,7 +165,7 @@
             </Pane>
             <Pane layoutX="13.0" layoutY="188.0" prefHeight="44.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="7.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnHomeOnAction" prefHeight="35.0" prefWidth="185.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Home" underline="true">
+                  <Button layoutX="6.0" layoutY="3.0" mnemonicParsing="false" onAction="#btnHomeOnAction" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #dff9fb; -fx-border-bottom: 5;" text="Home" underline="true">
                      <effect>
                         <Blend />
                      </effect>
@@ -175,7 +175,7 @@
                   </Button>
                   <ImageView fitHeight="35.0" fitWidth="34.0" layoutX="9.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../assets/icon/user.png" />
+                        <Image url="@../assets/icon/icons8-home-24.png" />
                      </image>
                   </ImageView>
                </children>
@@ -266,6 +266,16 @@
                </font>
             </Label>
             <Separator layoutX="39.0" layoutY="77.0" prefHeight="4.0" prefWidth="894.0" />
+            <ImageView fitHeight="423.0" fitWidth="457.0" layoutX="49.0" layoutY="276.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/image/Screenshot%202023-04-06%20231558.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="414.0" fitWidth="393.0" layoutX="542.0" layoutY="282.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/image/Screenshot%202023-04-06%20231403.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </children>
