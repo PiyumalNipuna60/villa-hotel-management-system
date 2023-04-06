@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
@@ -105,5 +107,15 @@
             <Separator layoutX="42.0" layoutY="84.0" prefHeight="4.0" prefWidth="894.0" style="-fx-background-color: red;" />
          </children>
       </Pane>
+      <ImageView fitHeight="423.0" fitWidth="457.0" layoutX="59.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/image/Screenshot%202023-04-06%20231558.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="414.0" fitWidth="393.0" layoutX="552.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/image/Screenshot%202023-04-06%20231403.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
