@@ -61,7 +61,7 @@ public class SignInFormController {
     }
 
     public void btnLoginOnAction(ActionEvent mouseEvent) {
-     try {
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/LoginForm.fxml"));
             Parent parent = loader.load();
             Scene scene=new Scene(parent);
@@ -73,16 +73,13 @@ public class SignInFormController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-       
     }
-    
-        //----------------------existCustomer--------------------------------------------------------------
+
+    //----------------------existCustomer--------------------------------------------------------------
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT empId FROM employee WHERE empId=?");
         pstm.setString(1, id);
         return pstm.executeQuery().next();
     }
-
-
 }
