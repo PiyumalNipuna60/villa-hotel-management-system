@@ -146,8 +146,8 @@ public class AdminDashBoardFormController {
     }
 
     @FXML
-    void btnMeelPlanOnAction(ActionEvent event) {
-       // setUi("CustomerForm");
+    void btnBillPlanOnAction(ActionEvent event) {
+        setUi("BillForm");
     }
 
     @FXML
