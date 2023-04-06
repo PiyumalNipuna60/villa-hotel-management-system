@@ -117,3 +117,14 @@ CREATE TABLE IF NOT EXISTS employeeSchedule(
                                                CONSTRAINT FOREIGN KEY (empId) REFERENCES employee(empId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 DESC employeeSchedule;
+
+
+CREATE TABLE IF NOT EXISTS bill(
+                                               cusId varchar(20),
+                                               bill varchar(20),
+                                               cash varchar(20),
+                                               balance varchar(20),
+                                               CONSTRAINT FOREIGN KEY (cusId) REFERENCES customer(cusId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+DESC bill;
+
