@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="724.0" prefWidth="980.0" style="-fx-background-color: white; -fx-background-radius: 15px; -fx-border-radius: 15px;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerFormController">
+   <effect>
+      <DropShadow height="19.31" radius="6.6674999999999995" spread="0.11" width="9.36" />
+   </effect>
+   <children>
+      <Pane layoutX="20.0" layoutY="15.0" prefHeight="60.0" prefWidth="942.0" style="-fx-background-color: #32ff7e; -fx-background-radius: 10;">
+         <effect>
+            <DropShadow radius="8.245000000000001" spread="0.18" width="13.98">
+               <color>
+                  <Color red="0.821052610874176" />
+               </color>
+            </DropShadow>
+         </effect></Pane>
+      <Label layoutX="51.0" layoutY="30.0" text="Customer Form">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDate" layoutX="766.0" layoutY="30.0" prefHeight="46.0" prefWidth="173.0" text="00">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Separator layoutX="44.0" layoutY="76.0" prefHeight="2.0" prefWidth="905.0" style="-fx-background-color: red;" />
+      <Pane layoutX="63.0" layoutY="91.0" prefHeight="305.0" prefWidth="866.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-width: 3;">
+         <effect>
+            <DropShadow height="15.15" radius="12.629999999999999" spread="0.15" width="37.37" />
+         </effect>
+         <children>
+            <Pane layoutX="16.0" layoutY="30.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="16.0" layoutY="-1.0" text="Id">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtCusId" layoutX="7.0" layoutY="18.0" onKeyPressed="#SearchOnKeyPress" prefHeight="35.0" prefWidth="353.0" promptText="Ex: 001" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="16.0" layoutY="98.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="-1.0" text="Name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtCusName" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="353.0" promptText="Ex: Manith" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="15.0" layoutY="165.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="15.0" layoutY="-1.0" text="address">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtCusAddress" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="353.0" promptText="Ex: Galle" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="15.0" layoutY="233.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="13.0" layoutY="-1.0" text="Date Of Birth">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="txtDob" layoutX="10.0" layoutY="18.0" prefHeight="35.0" prefWidth="118.0" />
+               </children>
+            </Pane>
+            <Pane layoutX="474.0" layoutY="30.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="13.0" layoutY="-1.0" text="Nic Number">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtCusNic" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="359.0" promptText="Ex: 1234567890" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="474.0" layoutY="98.0" prefHeight="60.0" prefWidth="378.0">
+               <children>
+                  <Label layoutX="13.0" layoutY="-1.0" text="Contact">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtContact" layoutX="7.0" layoutY="18.0" prefHeight="35.0" prefWidth="359.0" promptText="Ex: 0724585458" style="-fx-background-radius: 10;">
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </TextField>
+               </children>
+            </Pane>
+            <Pane layoutX="473.0" layoutY="165.0" prefHeight="60.0" prefWidth="159.0">
+               <children>
+                  <Label layoutX="13.0" layoutY="3.0" text="Gender">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <RadioButton fx:id="rbnMale" layoutX="12.0" layoutY="30.0" mnemonicParsing="false" text="Male">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="sexuaol" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rbnFemale" layoutX="90.0" layoutY="30.0" mnemonicParsing="false" text="Female" toggleGroup="$sexuaol" />
+               </children>
+            </Pane>
+            <Pane layoutX="753.0" layoutY="171.0" prefHeight="60.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="-4.0" layoutY="-1.0" text="Safary Id">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Group focusTraversable="true" layoutX="50.0" layoutY="22.0" />
+                  <ComboBox fx:id="cmbSafaryid" layoutX="-10.0" layoutY="20.0" prefHeight="25.0" prefWidth="93.0" />
+               </children>
+            </Pane>
+            <Button layoutX="477.0" layoutY="252.0" mnemonicParsing="false" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Save" />
+            <Button layoutX="573.0" layoutY="252.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Update" />
+            <Button layoutX="665.0" layoutY="252.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Delete" />
+            <Button layoutX="760.0" layoutY="252.0" mnemonicParsing="false" onAction="#btnSearchOnAction" prefHeight="35.0" prefWidth="81.0" style="-fx-background-color: #ff7675; -fx-border-color: #d63031; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Search" />
+            <Pane layoutX="638.0" layoutY="170.0" prefHeight="60.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="3.0" layoutY="-1.0" text="Safary Type">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Group focusTraversable="true" layoutX="50.0" layoutY="22.0" />
+                  <ComboBox fx:id="cmbSafaryType" layoutX="-4.0" layoutY="20.0" prefHeight="25.0" prefWidth="93.0" />
+               </children>
+            </Pane>
+            <Button layoutX="767.0" layoutY="6.0" mnemonicParsing="false" onAction="#btnClearOnAction" prefHeight="20.0" prefWidth="93.0" style="-fx-background-color: #74b9ff; -fx-border-color: #0984e3; -fx-border-width: 2; -fx-border-radius: 5; -fx-background-radius: 5;" text="Clear">
+               <font>
+                  <Font name="System Bold" size="9.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <TableView fx:id="tblCustomer" layoutX="63.0" layoutY="428.0" prefHeight="285.0" prefWidth="866.0">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="colName" prefWidth="130.4000244140625" text="Name" />
+            <TableColumn fx:id="colAddress" prefWidth="99.19998168945312" text="Address" />
+            <TableColumn fx:id="colBirthday" prefWidth="91.2000732421875" text="Birthday" />
+            <TableColumn fx:id="colNic" prefWidth="163.19992065429688" text="Nic" />
+            <TableColumn fx:id="colContact" prefWidth="103.20001220703125" text="Contact" />
+            <TableColumn fx:id="colGender" prefWidth="96.00006103515625" text="Gender" />
+            <TableColumn fx:id="colSalary" prefWidth="108.800048828125" text="Safary" />
+        </columns>
+      </TableView>
+      <Separator layoutX="68.0" layoutY="412.0" prefHeight="1.0" prefWidth="854.0" />
+   </children>
+</AnchorPane>
