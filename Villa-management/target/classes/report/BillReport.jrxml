@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c93321f-72a6-42de-9818-c5dfbb5f43dc">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="cusId" class="java.lang.String"/>
+	<parameter name="bill" class="java.lang.String"/>
+	<parameter name="cash" class="java.lang.String"/>
+	<parameter name="balance" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<staticText>
+				<reportElement x="125" y="20" width="310" height="40" uuid="27cd0a5d-ef2f-445f-8523-06ca196d77cc"/>
+				<textElement textAlignment="Center">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lake Villa Resort]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="41" y="64" width="100" height="16" uuid="c518f2ae-568f-4e54-a28c-f94c65649da9"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="490" y="64" width="100" height="16" uuid="13757bb2-ae00-4398-a35f-e37689d252f5"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="80" width="560" height="1" uuid="59c7938d-68f6-4b31-9236-dbe754b88f32"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="561" height="1" uuid="763f50c0-032d-400f-85cc-2caab8e17dae"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="207" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="18" width="100" height="30" uuid="785cafb3-a9c7-42f2-962c-4b29d022610a"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cus ID :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="60" width="100" height="30" uuid="106299d4-0732-4580-837e-26d0b5e36fbb"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bill :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="100" width="100" height="30" uuid="ecab9ba2-5bf1-4fd3-b7c2-2677be1ae551"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cash :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="140" width="100" height="30" uuid="01d941b0-4882-4252-9048-71138fb7fd64"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Balance :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="18" width="100" height="30" uuid="20cee77b-3e21-4281-8d1a-4ad4f5f6710f"/>
+				<textFieldExpression><![CDATA[$P{cusId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="60" width="100" height="30" uuid="331b9f0c-8335-4cb8-a8de-d06bb143b501"/>
+				<textFieldExpression><![CDATA[$P{bill}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="100" width="100" height="30" uuid="329741d1-b069-46a4-923f-2a160cc24dee"/>
+				<textFieldExpression><![CDATA[$P{cash}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="140" width="100" height="30" uuid="95c32b3c-d383-4684-ae28-2f56ebb20f3c"/>
+				<textFieldExpression><![CDATA[$P{balance}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="62" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="561" height="1" uuid="2623b25e-f3b9-44ae-94c5-45f2564f3852"/>
+			</line>
+			<line>
+				<reportElement x="0" y="60" width="561" height="1" uuid="d65ee5ea-2856-4916-adfb-8cbe57979a65"/>
+			</line>
+			<staticText>
+				<reportElement x="50" y="10" width="449" height="14" uuid="f1dce009-f528-4300-93c1-36868475276e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLEASE FEEL FREE TO CONTACT US FOR ANY INQUIRY AND SUGGESTION  AT 0112379379  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="30" width="270" height="18" uuid="a412515b-7ba8-46fe-b50c-d5891e29958c"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[THANKS YOU VISITING AND COME BACK..! ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

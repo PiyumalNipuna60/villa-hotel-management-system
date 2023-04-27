@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="LoginAnchorPane" centerShape="false" prefHeight="595.0" prefWidth="919.0" style="-fx-background-color: red;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="648.0" fitWidth="920.0" focusTraversable="true" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/image/Login-Design-Example-18.gif" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Pane layoutX="480.0" layoutY="24.0" prefHeight="555.0" prefWidth="392.0" style="-fx-background-color: white; -fx-border-color: #95a5a6;">
+         <effect>
+            <DropShadow height="23.34" radius="11.17" width="23.34" />
+         </effect>
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="104.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/image/6681204.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="136.0" layoutY="210.0" prefHeight="42.0" prefWidth="96.0" text="Log In">
+               <font>
+                  <Font name="Eras Bold ITC" size="29.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtUserName" layoutX="75.0" layoutY="308.0" prefHeight="35.0" prefWidth="231.0" />
+            <PasswordField fx:id="txtPassword" layoutX="75.0" layoutY="381.0" prefHeight="35.0" prefWidth="231.0" />
+            <Label layoutX="75.0" layoutY="286.0" text="User Name" />
+            <Label layoutX="77.0" layoutY="359.0" text="Passord" />
+            <Button layoutX="78.0" layoutY="453.0" mnemonicParsing="false" onAction="#btnLoginOnAction" prefHeight="35.0" prefWidth="231.0" style="-fx-background-color: #00cec9;" text="Login">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Label layoutX="97.0" layoutY="511.0" text="Don't have an account ?" />
+            <Button layoutX="283.0" layoutY="507.0" mnemonicParsing="false" onAction="#btnSignInOnAction" style="-fx-background-color: white;" text="Sign In" textFill="#0d00c9">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="1.0" right="1.0" top="1.0" />
+         </padding>
+      </Pane>
+      <ImageView fitHeight="558.0" fitWidth="433.0" layoutX="48.0" layoutY="21.0" pickOnBounds="true">
+         <image>
+            <Image url="@../assets/image/70649f8c96e585332f500ada9df046fe.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
