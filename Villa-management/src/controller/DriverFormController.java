@@ -1,5 +1,6 @@
 package controller;
 
+import Entity.Employee;
 import Entity.driver;
 import db.DBConnection;
 import dto.DriverDTO;
@@ -10,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import tm.CustomerTm;
 import tm.driverTm;
+import util.ValidationUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,9 +25,14 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class DriverFormController {
 
+    public Button btnSave;
+    public Button btnUpdate;
+    public Button btnDelete;
     @FXML
     private TableColumn colAddress;
 
@@ -41,7 +49,7 @@ public class DriverFormController {
     private Label lblDate;
 
     @FXML
-    private TableView tblCustomer;
+    private TableView<driverTm> tblCustomer;
 
     @FXML
     private TextField txtCusAddress;
@@ -54,8 +62,20 @@ public class DriverFormController {
 
     @FXML
     private TextField txtCusName;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     public void initialize() {
+
+        Pattern patternId=Pattern.compile("^(D00)[0-9]{1,5}$");
+        Pattern patternName=Pattern.compile("^[A-z]{3,}$");
+        Pattern patternAddress=Pattern.compile("^[A-z 0-9 ,/]{5,}$");
+        Pattern patternContact=Pattern.compile("^(071|072|070|075|076|078|)[0-9]{10}$");
+
+        map.put(txtCusId,patternId);
+        map.put(txtCusName,patternName);
+        map.put(txtCusAddress,patternAddress);
+        map.put(txtCusContact,patternContact);
+
 
         colId.setCellValueFactory(new PropertyValueFactory("driverId"));
         colName.setCellValueFactory(new PropertyValueFactory("driverName"));
@@ -130,22 +150,32 @@ public class DriverFormController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction() {
         String id = txtCusId.getText();
         String name = txtCusName.getText();
         String address = txtCusAddress.getText();
         String contact = txtCusContact.getText();
 
         try {
-            driver driver = new driver();
-            boolean save = driver.save(new DriverDTO(id, name, address, contact));
 
-            if (save) {
-                new Alert(Alert.AlertType.INFORMATION, id + " Driver Added..!").show();
-                LoadAllCustomer();
-                btnClearOnAction();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+            if (!id.equals("") && !name.equals("") && !address.equals("") && !contact.equals("")){
+                if (!driver.existCustomer(id)) {
+                    driver driver = new driver();
+                    boolean save = driver.save(new DriverDTO(id, name, address, contact));
+
+                    if (save) {
+                        new Alert(Alert.AlertType.INFORMATION, id + " Driver Added..!").show();
+                        LoadAllCustomer();
+                        btnClearOnAction();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    }
+                }else {
+                    new Alert(Alert.AlertType.ERROR, "Driver Id Already Add..!").show();
+                }
+
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Enter Data..!").show();
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -204,14 +234,22 @@ public class DriverFormController {
         timeline.play();
     }
 
-
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT driverId FROM driver WHERE driverId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
+    public void textFieldsKeyReleasesd(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        ValidationUtil.Validation(map);
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            Object respond =  ValidationUtil.Validation(map);
+            if (respond instanceof TextField) {
+                TextField textField = (TextField) respond;
+                textField.requestFocus();
+            } else {
+                boolean exit = Employee.existCustomer(txtCusId.getText());
+                if (exit) {
+                    btnSave.setDisable(true);
+                } else {
+                    btnSave.setDisable(false);
+                    btnSaveOnAction();
+                }
+            }
+        }
     }
-
-
 }

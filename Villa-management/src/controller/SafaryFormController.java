@@ -1,5 +1,6 @@
 package controller;
 
+import Entity.Customer;
 import Entity.Safary;
 import Entity.driver;
 import db.DBConnection;
@@ -14,9 +15,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import tm.SafaryTm;
+import tm.driverTm;
+import util.ValidationUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,8 +30,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class SafaryFormController {
+    public Button btnSave;
+    public Button btnUpdate;
+    public Button btnDelete;
     @FXML
     private ComboBox cmbDriverId;
 
@@ -75,8 +84,16 @@ public class SafaryFormController {
 
     @FXML
     private TextField txtTime;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     public void initialize() {
+        btnSave.setDisable(true);
+        Pattern patternSId=Pattern.compile("^(SF00)[0-9]{1,5}$");
+        Pattern patternTime=Pattern.compile("^[0-9]{2}(:)[0-9]{2}(:)[0-9]{2}$");
+
+        map.put(txtSafaryId,patternSId);
+        map.put(txtTime,patternTime);
+
         colSafaryId.setCellValueFactory(new PropertyValueFactory("safaryId"));
         colType.setCellValueFactory(new PropertyValueFactory("type"));
         colDate.setCellValueFactory(new PropertyValueFactory("date"));
@@ -93,6 +110,9 @@ public class SafaryFormController {
             if (newValue != null) {
                 try {
                     setDriverFields(newValue);
+                    if (txtSafaryId.getText()!=null && txtTime.getText()!=null && txtDate.getValue()!=null) {
+                        btnSave.setDisable(false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,14 +123,10 @@ public class SafaryFormController {
 
     private void setDriverFields(Object newValue) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM driver WHERE driverId=?");
-            pstm.setString(1, String.valueOf(newValue));
-            ResultSet rst = pstm.executeQuery();
-
-            if (rst.next()){
-                lblDriverName.setText(rst.getString(2));
-                lblDriverContct.setText(rst.getString(4));
+            DriverDTO search = driver.search(String.valueOf(newValue));
+            if (!search.getDriverId().equals(null)){
+                lblDriverName.setText(search.getDriverName());
+                lblDriverContct.setText(search.getContact());
             }
 
 
@@ -129,11 +145,9 @@ public class SafaryFormController {
 
         ObservableList obList2 = FXCollections.observableArrayList();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from Driver");
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                obList2.add(new String(resultSet.getString(1)));
+            ArrayList<driverTm> all = driver.getAll();
+            for (driverTm x:all) {
+                obList2.add(x.getDriverId());
             }
             cmbDriverId.setItems(obList2);
 
@@ -219,27 +233,31 @@ public class SafaryFormController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction() {
         String id = txtSafaryId.getText();
         String type = String.valueOf(cmbSafaryType.getValue());
         String date = String.valueOf(txtDate.getValue());
         String time = txtTime.getText();
         String driverId = String.valueOf(cmbDriverId.getValue());
 
-        try {
-            Safary safary = new Safary();
-            boolean save = safary.save(new SafaryDTO(id, type, date, time, driverId));
-            if (save) {
-                new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
-                LoadAllCustomer();
-                btnClearOnAction();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+        if (id!=null && date!=null && time!=null){
+            try {
+                Safary safary = new Safary();
+                boolean save = safary.save(new SafaryDTO(id, type, date, time, driverId));
+                if (save) {
+                    new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
+                    LoadAllCustomer();
+                    btnClearOnAction();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                }
+
+
+            } catch (SQLException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-
-
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        }else {
+            new Alert(Alert.AlertType.ERROR, "Enter Data..!").show();
         }
     }
 
@@ -303,6 +321,24 @@ public class SafaryFormController {
         }), new KeyFrame(Duration.seconds(1)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+    }
+
+    public void textFieldsKeyReleasesd(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        ValidationUtil.Validation(map);
+        if (keyEvent.getCode()== KeyCode.ENTER){
+            Object respond = ValidationUtil.Validation(map);
+            if (respond instanceof TextField){
+                TextField textField= (TextField) respond;
+                textField.requestFocus();
+            }else {
+                boolean exit= Customer.existCustomer(txtSafaryId.getText());
+                if (exit){
+
+                }else {
+                    btnSaveOnAction();
+                }
+            }
+        }
     }
 
 }

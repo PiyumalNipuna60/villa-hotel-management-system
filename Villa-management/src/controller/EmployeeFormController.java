@@ -1,5 +1,6 @@
 package controller;
 
+import Entity.Customer;
 import Entity.Employee;
 import db.DBConnection;
 import dto.EmployeeDTO;
@@ -10,9 +11,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import tm.EmployeeTm;
+import util.ValidationUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,11 +23,16 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class EmployeeFormController {
 
     public TextField txtEmpUserName;
     public TextField txtPassword;
+    public Button btnSave;
+    public Button btnUpdate;
+    public Button btnDelete;
     @FXML
     private TableColumn colAddress;
 
@@ -72,19 +80,37 @@ public class EmployeeFormController {
 
     @FXML
     private TextField txtEmpSalary;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     public void initialize() {
+
+        Pattern patternId = Pattern.compile("^(E0)[0-9]{1,5}$");
+        Pattern patternName = Pattern.compile("^[A-z]{3,}$");
+        Pattern patternAddress = Pattern.compile("^[A-z 0-9 ,/]{5,}$");
+        Pattern patternAge = Pattern.compile("^[0-9]{1,3}$");
+        Pattern patternNic = Pattern.compile("^[0-9 v]{10,12}$");
+        Pattern patternContact = Pattern.compile("^(071|072|070|075|076|078|)[0-9]{10}$");
+        Pattern patternSalary = Pattern.compile("^[0-9]{2,}$");
+
+        map.put(txtEmpId, patternId);
+        map.put(txtEmpName, patternName);
+        map.put(txtEmpAddress, patternAddress);
+        map.put(txtEmpAge, patternAge);
+        map.put(txtEmpNic, patternNic);
+        map.put(txtEmpContact, patternContact);
+        map.put(txtEmpSalary, patternSalary);
 
         colId.setCellValueFactory(new PropertyValueFactory("empId"));
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colAddress.setCellValueFactory(new PropertyValueFactory("address"));
-        colBAge.setCellValueFactory(new PropertyValueFactory("age"));
+        colBAge.setCellValueFactory(new PropertyValueFactory("dob"));
         colnic.setCellValueFactory(new PropertyValueFactory("nic"));
         colContact.setCellValueFactory(new PropertyValueFactory("contact"));
         colSalary.setCellValueFactory(new PropertyValueFactory("salary"));
 
         LoadAllCustomer();
         generateRealTime();
+
     }
 
     private void LoadAllCustomer() {
@@ -113,7 +139,7 @@ public class EmployeeFormController {
     void SearchOnKeyPress(KeyEvent event) {
         String id = txtEmpId.getText();
         try {
-            if (!existCustomer(id)) {
+            if (!Employee.existCustomer(id)) {
 
             } else {
                 Employee employee = new Employee();
@@ -163,7 +189,7 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction() {
         String id = txtEmpId.getText();
         String name = txtEmpName.getText();
         String address = txtEmpAddress.getText();
@@ -175,18 +201,22 @@ public class EmployeeFormController {
         String password = txtPassword.getText();
 
         try {
-            if (!existCustomer(id)) {
-                Employee employee = new Employee();
-                boolean save = employee.save(new EmployeeDTO(id, name, address, age, nic, contact, salary, userName, password));
-                if (save) {
-                    new Alert(Alert.AlertType.INFORMATION, id + " Employee Added..!").show();
-                    LoadAllCustomer();
-                    btnClearOnAction();
+            if (id.equals("") && name.equals("") && address.equals("") && age.equals("") && nic.equals("") && contact.equals("") && !salary.equals("")){
+                if (!Employee.existCustomer(id)) {
+                    Employee employee = new Employee();
+                    boolean save = employee.save(new EmployeeDTO(id, name, address, age, nic, contact, salary, userName, password));
+                    if (save) {
+                        new Alert(Alert.AlertType.INFORMATION, id + " Employee Added..!").show();
+                        LoadAllCustomer();
+                        btnClearOnAction();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    }
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    new Alert(Alert.AlertType.ERROR, "Employee Id Already Add..!").show();
                 }
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Employee Id Already Add..!").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Enter Data..!").show();
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -195,12 +225,13 @@ public class EmployeeFormController {
 
     @FXML
     void btnSearchOnAction() {
+
         String id = txtEmpId.getText();
         try {
             Employee employee = new Employee();
             EmployeeDTO search = employee.search(id);
 
-            if (search==null) {
+            if (search == null) {
                 new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
             } else {
                 txtEmpName.setText(search.getName());
@@ -209,7 +240,7 @@ public class EmployeeFormController {
                 txtEmpNic.setText(search.getNic());
                 txtEmpContact.setText(search.getContact());
                 txtEmpSalary.setText(search.getSalary());
-                }
+            }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -253,13 +284,26 @@ public class EmployeeFormController {
         timeline.play();
     }
 
-
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT empId FROM employee WHERE empId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
+    public void textFieldsKeyReleasesd(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        ValidationUtil.Validation(map);
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            Object respond =  ValidationUtil.Validation(map);
+            if (respond instanceof TextField) {
+                TextField textField = (TextField) respond;
+                textField.requestFocus();
+            } else {
+                boolean exit = Employee.existCustomer(txtEmpId.getText());
+                if (exit) {
+                  btnSave.setDisable(true);
+                    btnDelete.setDisable(false);
+                    btnUpdate.setDisable(false);
+                } else {
+                    btnSave.setDisable(false);
+                    btnDelete.setDisable(true);
+                    btnUpdate.setDisable(true);
+                    btnSaveOnAction();
+                }
+            }
+        }
     }
-
 }

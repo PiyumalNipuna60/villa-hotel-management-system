@@ -1,9 +1,10 @@
 package controller;
 
-import Entity.BookingRoom;
-import Entity.RoomDetails;
+import Entity.*;
 import db.DBConnection;
 import dto.BookingRoomDTO;
+import dto.CustomerDTO;
+import dto.RoomDTO;
 import dto.RoomDetailsDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -15,7 +16,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import tm.BookingRoomTM;
+import tm.CustomerTm;
 import util.CrudUtil;
 
 
@@ -26,6 +32,9 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class BookingRoomFormController {
 
@@ -83,11 +92,13 @@ public class BookingRoomFormController {
     @FXML
     private Label lblPeice;
 
+    //regex
     @FXML
     private TableView<BookingRoomTM> tblCustomer;
 
     @FXML
     private TextField txtPayment;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     public void initialize() {
         colCusId.setCellValueFactory(new PropertyValueFactory("cusId"));
@@ -138,13 +149,10 @@ public class BookingRoomFormController {
 
     private void setCustomerDetails(Object newValue) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from customer where cusId=?");
-            pstm.setString(1, String.valueOf(newValue));
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                lblName.setText(resultSet.getString(2));
-                lblContact.setText(resultSet.getString(6));
+            CustomerDTO search = Customer.search(String.valueOf(newValue));
+            if (!search.getCusId().equals(null)) {
+                lblName.setText(search.getName());
+                lblContact.setText(search.getContact());
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -153,13 +161,10 @@ public class BookingRoomFormController {
 
     private void setRoomDetails(Object newValue) {
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from room where roomId=?");
-            pstm.setString(1, String.valueOf(newValue));
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                lblPeice.setText(resultSet.getString(5));
-                lblAvailable.setText(resultSet.getString(4));
+            RoomDTO search = Room.search(String.valueOf(newValue));
+            if (!search.getRoomId().equals(null)) {
+                lblPeice.setText(search.getPrice());
+                lblAvailable.setText(search.getAvailable());
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -169,12 +174,9 @@ public class BookingRoomFormController {
     private void setRoomFields(Object newValue) {
         ObservableList obList2 = FXCollections.observableArrayList();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from room where type=?");
-            pstm.setString(1, String.valueOf(newValue));
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                obList2.add(new String(resultSet.getString(1)));
+            ArrayList<RoomDTO> roomDTOS = Room.searchRoomType(String.valueOf(newValue));
+            for (RoomDTO x:roomDTOS) {
+                obList2.add(x.getRoomId());
             }
             cmbRoomId.setItems(obList2);
         } catch (SQLException | ClassNotFoundException e) {
@@ -198,11 +200,9 @@ public class BookingRoomFormController {
 
         ObservableList obList3 = FXCollections.observableArrayList();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from customer");
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                obList3.add(new String(resultSet.getString(1)));
+            ArrayList<CustomerTm> all = Customer.getAll();
+            for (CustomerTm x:all) {
+                obList3.add(x.getCusId());
             }
             cmbCustomerId.setItems(obList3);
         } catch (SQLException | ClassNotFoundException e) {
@@ -234,6 +234,7 @@ public class BookingRoomFormController {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     void btnClearOnAction() {
         cmbCustomerId.getSelectionModel().clearSelection();
@@ -270,10 +271,10 @@ public class BookingRoomFormController {
         String payment = txtPayment.getText();
 
         try {
-        BookingRoom bookingRoom = new BookingRoom();
-            boolean save = bookingRoom.save(new RoomDetailsDTO(roomId, cusId, paymentType, payment));
+            BookingRoom bookingRoom = new BookingRoom();
+            boolean save = bookingRoom.saveBooking(new RoomDetailsDTO(roomId, cusId, paymentType, payment));
             if (save) {
-                new Alert(Alert.AlertType.INFORMATION, roomId + " Room "+cusId+" ..!").show();
+                new Alert(Alert.AlertType.INFORMATION, roomId + " Room " + cusId + " ..!").show();
                 LoadAllCustomer();
                 btnClearOnAction();
             } else {
@@ -281,7 +282,7 @@ public class BookingRoomFormController {
             }
 
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -290,34 +291,22 @@ public class BookingRoomFormController {
     void btnSearchOnAction(ActionEvent event) {
         Object cusId = cmbCustomerId.getValue();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select*from roomDetails where cusId=?");
-            pstm.setString(1, String.valueOf(cusId));
-            ResultSet rst = pstm.executeQuery();
+            RoomDetailsDTO search = RoomDetails.search(String.valueOf(cusId));
 
-            if (!existRoom(String.valueOf(cusId))) {
+            if (!RoomDetails.existRoom(String.valueOf(cusId))) {
                 new Alert(Alert.AlertType.ERROR, cusId + " Customer Not Booking Room..!").show();
             } else {
-                if (rst.next()) {
-                    cmbRoomId.setValue(rst.getString(1));
-                    cmbPaymentType.setValue(rst.getString(3));
-                    txtPayment.setText(rst.getString(4));
+                if (!search.getRoomId().equals(null)) {
+                    cmbRoomId.setValue(search.getRoomId());
+                    cmbPaymentType.setValue(search.getPaymentType());
+                    txtPayment.setText(search.getPayment());
 
+                    CustomerDTO sCus = Customer.search(String.valueOf(cusId));
+                    lblName.setText(sCus.getName());
+                    lblContact.setText(sCus.getContact());
 
-                    PreparedStatement pstm2 = connection.prepareStatement("select*from customer where cusId=?");
-                    pstm2.setString(1, String.valueOf(cusId));
-                    ResultSet rst2 = pstm2.executeQuery();
-                    if (rst2.next()){
-                        lblName.setText(rst2.getString(2));
-                        lblContact.setText(rst2.getString(4));
-                    }
-
-                    PreparedStatement pstm3 = connection.prepareStatement("select*from room where roomId=?");
-                    pstm3.setString(1, String.valueOf(cmbRoomId.getValue()));
-                    ResultSet rst3 = pstm3.executeQuery();
-                    if (rst3.next()){
-                        cmbRoomType.setValue(rst3.getString(2));
-                    }
+                    RoomDTO sRoom = Room.search(String.valueOf(cmbRoomId.getValue()));
+                    cmbRoomType.setValue(sRoom.getType());
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -359,13 +348,43 @@ public class BookingRoomFormController {
         timeline.play();
     }
 
+    public void btnPrintOnAction(ActionEvent actionEvent) {
+        String id = String.valueOf(cmbCustomerId.getValue());
+        String name = lblName.getText();
+        String contact = lblContact.getText();
+        String roomId = String.valueOf(cmbRoomId.getValue());
+        String roomType = String.valueOf(cmbRoomType.getValue());
+        String price = lblPeice.getText();
+        String paymentType = String.valueOf(cmbPaymentType.getValue());
+        String payment = txtPayment.getText();
 
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT cusId FROM roomDetails WHERE cusId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
+        HashMap hashMap = new HashMap();
+        hashMap.put("id", id);
+        hashMap.put("name", name);
+        hashMap.put("contact", contact);
+        hashMap.put("roomId", roomId);
+        hashMap.put("roomType", roomType);
+        hashMap.put("roomPrice", price);
+        hashMap.put("paymentType", paymentType);
+        hashMap.put("payment", payment);
+
+
+        try {
+            //Catch The Report
+            JasperDesign load = JRXmlLoader.load(this.getClass().getResourceAsStream("/report/BookingReport.jrxml"));
+
+            //Compile the Report
+            JasperReport compileReport = JasperCompileManager.compileReport(load);
+
+            //Fill the information which report needed
+            JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, hashMap, new JREmptyDataSource(1));
+
+            //Then the report is ready.. let's view it
+            JasperViewer.viewReport(jasperPrint, false);
+
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
     }
-
 }

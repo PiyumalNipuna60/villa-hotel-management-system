@@ -13,17 +13,22 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
-import tm.BillTM;
-import tm.BookingRoomTM;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import tm.CustomerTm;
-
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class BillFormController {
 
@@ -107,7 +112,6 @@ public class BillFormController {
         colRoomId.setCellValueFactory(new PropertyValueFactory("roomId"));
         colType.setCellValueFactory(new PropertyValueFactory("roomType"));
         colRoomPrice.setCellValueFactory(new PropertyValueFactory("roomPrice"));
-        colPayment.setCellValueFactory(new PropertyValueFactory("payment"));
         colBill.setCellValueFactory(new PropertyValueFactory("bill"));
         colCash.setCellValueFactory(new PropertyValueFactory("cash"));
         colBalance.setCellValueFactory(new PropertyValueFactory("balance"));
@@ -122,7 +126,8 @@ public class BillFormController {
 //            if (newValue != null) {
 //                try {
 //                    setDetailsFields(newValue);
-//                } catch (Exception e) {
+//                } catch (Exception e) {neke hari
+
 //                    e.printStackTrace();
 //                }
 //            }
@@ -173,59 +178,6 @@ public class BillFormController {
         }
     }
 
-    private void setDetailsFields(Object newValue) {
-
-//        try {
-//            Customer customer = new Customer();
-//            CustomerDTO search = customer.search(String.valueOf(newValue));
-//            lblCusName.setText(search.getName());
-//            lblCusContact.setText(search.getContact());
-//            lblSafaryType.setText(search.getSafaryType());
-//
-//
-//            RoomDetails room = new RoomDetails();
-//            ResultSet search1 = room.search(String.valueOf(newValue));
-//            if (search1!=null){
-//                lblRoomId.setText(search1.getString(1));
-//                lblPayment.setText(search1.getString(4));
-//            }
-//
-//
-//
-//            Room room1 = new Room();
-//            ResultSet search2 = room1.search(String.valueOf(newValue));
-//            if (search2!=null){
-//                lblRoomPrice.setText(search2.getString(5));
-//                lblRoomType.setText(search2.getString(2));
-//            }
-//
-//
-//            Bill bill = new Bill();
-//            ResultSet search3 = bill.search(String.valueOf(newValue));
-//            if (search3!=null){
-//                txtBill.setText(search3.getString(2));
-//                txtCash.setText(search3.getString(3));
-//                txtBalance.setText(search3.getString(4));
-//            }
-
-/*            Bill bill = new Bill();
-            ResultSet search1 = bill.search(String.valueOf(newValue));
-            lblCusName.setText(search1.getString(1));
-            lblCusContact.setText(search1.getString(2));
-            lblSafaryType.setText(search1.getString(3));
-            lblRoomId.setText(search1.getString(4));
-            lblPayment.setText(search1.getString(5));
-            lblRoomPrice.setText(search1.getString(6));
-            lblRoomType.setText(search1.getString(7));
-            txtBill.setText(search1.getString(8));
-            txtCash.setText(search1.getString(9));
-            txtBalance.setText(search1.getString(10));*/
-//
-//        } catch (SQLException | ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-    }
-
     @FXML
     void btnClearOnAction() {
          cmbCusId.getSelectionModel().clearSelection();
@@ -234,11 +186,9 @@ public class BillFormController {
          txtBalance.clear();
          lblCusContact.setText("");
          lblCusName.setText("");
-         lblPayment.setText("");
          lblRoomId.setText("");
          lblRoomPrice.setText("");
          lblRoomType.setText("");
-         lblSafaryType.setText("");
     }
 
     @FXML
@@ -265,18 +215,17 @@ public class BillFormController {
         String cusId = String.valueOf(cmbCusId.getValue());
         String name = lblCusName.getText();
         String contact = lblCusContact.getText();
-        String safaryType = lblSafaryType.getText();
         String roomId = lblRoomId.getText();
         String roomType = lblRoomType.getText();
+
         String roomPrice = lblRoomPrice.getText();
-        String payment = lblPayment.getText();
         String bill = txtBill.getText();
         String cash = txtCash.getText();
         String balance = txtBalance.getText();
 
         try {
             Bill bill1 = new Bill();
-            boolean save = bill1.save(new BillDTO(cusId,name,contact,safaryType,roomId,roomType,roomPrice,payment,bill,cash,balance));
+            boolean save = bill1.save(cusId,bill,cash,balance);
             if (save) {
                 new Alert(Alert.AlertType.INFORMATION,  " Bill Save..!").show();
                 LoadAllCustomer();
@@ -324,22 +273,12 @@ public class BillFormController {
     }
 
     private void generateRealTime() {
-        //lblDate.setText(LocalDate.now().toString());
         Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
             lblDate.setText(LocalDateTime.now().format(formatter));
         }), new KeyFrame(Duration.seconds(1)));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT cusId FROM roomDetails WHERE cusId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
     }
 
     public void btnSearchOnAction(ActionEvent actionEvent) {
@@ -357,10 +296,75 @@ public class BillFormController {
             txtBill.setText(search1.getString(8));
             txtCash.setText(search1.getString(9));
             txtBalance.setText(search1.getString(10));
-
         } catch (SQLException | ClassNotFoundException e) {
-
         }
+    }
 
+    public void cmbCusIdOnAction(ActionEvent actionEvent){
+        if (!String.valueOf(cmbCusId.getValue()).equals("null")){
+            try {
+                CusRoomDetail cusRoomDetail = Bill.searchCust(String.valueOf(cmbCusId.getValue()));
+                lblCusName.setText(cusRoomDetail.getName());
+                lblCusContact.setText(cusRoomDetail.getContact());
+                lblRoomId.setText(cusRoomDetail.getRoomId());
+                lblRoomPrice.setText(cusRoomDetail.getRoomPrice());
+                lblRoomType.setText(cusRoomDetail.getRoomType());
+            } catch (SQLException | ClassNotFoundException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+    public void btnPrintOnAction(ActionEvent actionEvent) {
+        String cusId = String.valueOf(cmbCusId.getValue());
+        String bill = txtBill.getText();
+        String cash = txtCash.getText();
+        String balance = txtBalance.getText();
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("id",cusId);
+        hashMap.put("bill",bill);
+        hashMap.put("cash",cash);
+        hashMap.put("balance",balance);
+
+        try {
+            //Catch The Report
+            JasperDesign load = JRXmlLoader.load(this.getClass().getResourceAsStream("/report/BillReport.jrxml"));
+
+            //Compile the Report
+            JasperReport compileReport = JasperCompileManager.compileReport(load);
+
+            //Fill the information which report needed
+            JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, hashMap, new JREmptyDataSource(1));
+
+            //Then the report is ready.. let's view it
+            JasperViewer.viewReport(jasperPrint,false);
+
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnReportOnAction(ActionEvent actionEvent) {
+
+        try {
+            JasperReport compileReport = (JasperReport) JRLoader.loadObject(Objects.requireNonNull(this.getClass().getResource("/report/FullBillReport.jasper")));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, null, getCon());
+            JasperViewer.viewReport(jasperPrint, false);
+
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+    public Connection getCon(){
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/villaManagement","root","1234");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

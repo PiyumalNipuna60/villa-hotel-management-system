@@ -1,5 +1,6 @@
 package controller;
 
+import Entity.Employee;
 import Entity.Room;
 import db.DBConnection;
 import dto.RoomDTO;
@@ -12,9 +13,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import tm.RoomTM;
+import util.ValidationUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,9 +26,14 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class RoomFormController {
 
+    public Button btnSave;
+    public Button btnUpdate;
+    public Button btnDelete;
     @FXML
     private ComboBox cmbRoomAvailable;
 
@@ -61,8 +69,17 @@ public class RoomFormController {
 
     @FXML
     private TextField txtRoomPrice;
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
 
     public void initialize() {
+        btnSave.setDisable(true);
+        Pattern patternId = Pattern.compile("^(R00)[0-9]{1,6}$");
+        Pattern patternPrice = Pattern.compile("^[0-9]{2,}$");
+
+        map.put(txtRoomId, patternId);
+        map.put(txtRoomPrice, patternPrice);
+
+
         colId.setCellValueFactory(new PropertyValueFactory("roomId"));
         colType.setCellValueFactory(new PropertyValueFactory("type"));
         colDescription.setCellValueFactory(new PropertyValueFactory("description"));
@@ -72,8 +89,16 @@ public class RoomFormController {
         LoadAllCustomer();
         generateRealTime();
         loadComboBox();
-    }
 
+        cmbRoomType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                        btnSave.setDisable(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        });
+
+    }
     private void loadComboBox() {
         ObservableList obList = FXCollections.observableArrayList();
         obList.add("AC");
@@ -119,16 +144,15 @@ public class RoomFormController {
     void SearchOnKeyPress(KeyEvent event) {
         String id = txtRoomId.getText();
         try {
-            if (!existRoom(id)) {
+            if (!Room.existRoom(id)) {
 
             } else {
-                Room room = new Room();
-                ResultSet rst = room.search(id);
-                if (rst.next()) {
-                    cmbRoomType.setValue(rst.getString(2));
-                    cmbRoomDescrition.setValue(rst.getString(3));
-                    cmbRoomAvailable.setValue(rst.getString(4));
-                    txtRoomPrice.setText(rst.getString(5));
+                RoomDTO search = Room.search(id);
+                if (!search.getRoomId().equals(null)) {
+                    cmbRoomType.setValue(search.getType());
+                    cmbRoomDescrition.setValue(search.getDescription());
+                    cmbRoomAvailable.setValue(search.getAvailable());
+                    txtRoomPrice.setText(search.getPrice());
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -165,29 +189,30 @@ public class RoomFormController {
 
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    void btnSaveOnAction() {
         String id = txtRoomId.getText();
         String type = String.valueOf(cmbRoomType.getValue());
         String description = String.valueOf(cmbRoomAvailable.getValue());
         String available = String.valueOf(cmbRoomAvailable.getValue());
         String price = txtRoomPrice.getText();
         try {
-            if (!existRoom(id)) {
-                Room room = new Room();
-                boolean save = room.save(new RoomDTO(id, type, description, available, price));
-                if (save) {
-                    new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
-                    LoadAllCustomer();
-                    btnClearOnAction();
+            if (!id.equals("") && !type.equals(null) && !description.equals(null) && !available.equals(null) && !price.equals("")) {
+                if (!Room.existRoom(id)) {
+                    Room room = new Room();
+                    boolean save = room.save(new RoomDTO(id, type, description, available, price));
+                    if (save) {
+                        new Alert(Alert.AlertType.INFORMATION, id + " Room Added..!").show();
+                        LoadAllCustomer();
+                        btnClearOnAction();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    }
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    new Alert(Alert.AlertType.ERROR, "Duplicate Entry..!").show();
                 }
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Duplicate Entry..!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Enter Data..!").show();
             }
-
-
-
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -199,16 +224,15 @@ public class RoomFormController {
     void btnSearchOnAction(ActionEvent event) {
         String id = txtRoomId.getText();
         try {
-            if (!existRoom(id)) {
+            if (!Room.existRoom(id)) {
                 new Alert(Alert.AlertType.ERROR, id + " Driver Not Register..!").show();
             } else {
-                Room room = new Room();
-                ResultSet rst = room.search(id);
-                if (rst.next()) {
-                    cmbRoomType.setValue(rst.getString(2));
-                    cmbRoomDescrition.setValue(rst.getString(3));
-                    cmbRoomAvailable.setValue(rst.getString(4));
-                    txtRoomPrice.setText(rst.getString(5));
+                RoomDTO search = Room.search(id);
+                if (!search.getRoomId().equals(null)) {
+                    cmbRoomType.setValue(search.getType());
+                    cmbRoomDescrition.setValue(search.getDescription());
+                    cmbRoomAvailable.setValue(search.getAvailable());
+                    txtRoomPrice.setText(search.getPrice());
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -249,13 +273,24 @@ public class RoomFormController {
         timeline.play();
     }
 
-
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT roomId FROM room WHERE roomId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
+    public void textFieldsKeyReleasesd(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        ValidationUtil.Validation(map);
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            Object respond = ValidationUtil.Validation(map);
+            if (respond instanceof TextField) {
+                TextField textField = (TextField) respond;
+                textField.requestFocus();
+            } else {
+                boolean exit = Employee.existCustomer(txtRoomId.getText());
+                if (exit) {
+                    btnSave.setDisable(true);
+                } else {
+                    btnSave.setDisable(false);
+                    btnSaveOnAction();
+                }
+            }
+        }
     }
+
 
 }

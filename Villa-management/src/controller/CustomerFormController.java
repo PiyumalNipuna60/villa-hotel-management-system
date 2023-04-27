@@ -1,8 +1,9 @@
 package controller;
 
 import Entity.Customer;
-import db.DBConnection;
+import Entity.Safary;
 import dto.CustomerDTO;
+import dto.SafaryDTO;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,23 +13,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import tm.BookingRoomTM;
 import tm.CustomerTm;
+import util.ValidationUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class CustomerFormController {
 
     public DatePicker txtDob;
+    public Button btnSave;
+    public Button btnUpdate;
+    public Button btnDelete;
     @FXML
     private ComboBox cmbSafaryid;
     @FXML
@@ -87,9 +91,25 @@ public class CustomerFormController {
 
     @FXML
     private TextField txtCusNic;
+    LinkedHashMap<TextField,Pattern> map = new LinkedHashMap();
+
 
     public void initialize() {
-        loadComboBox();
+
+        btnSave.setDisable(true);
+
+        Pattern patternId=Pattern.compile("^(C00)[0-9]{1,5}$");
+        Pattern patternName=Pattern.compile("^[A-z]{3,}$");
+        Pattern patternAddress=Pattern.compile("^[A-z 0-9 ,/]{5,}$");
+        Pattern patternNic=Pattern.compile("^[0-9 v]{10,12}$");
+        Pattern patternContact=Pattern.compile("^(071|072|070|075|076|078|)[0-9]{10}$");
+
+        map.put(txtCusId,patternId);
+        map.put(txtCusName,patternName);
+        map.put(txtCusAddress,patternAddress);
+        map.put(txtCusNic,patternNic);
+        map.put(txtContact,patternContact);
+
 
         colId.setCellValueFactory(new PropertyValueFactory("cusId"));
         colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -101,11 +121,15 @@ public class CustomerFormController {
         colSalary.setCellValueFactory(new PropertyValueFactory("safaryId"));
 
         LoadAllCustomer();
+        loadComboBox();
         generateRealTime();
         cmbSafaryType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
                     setCustomerFields(newValue);
+                    if (txtCusId.getText()!=null && txtCusName.getText()!=null && txtCusAddress.getText()!=null && txtCusNic.getText()!=null && txtContact.getText()!=null){
+                        btnSave.setDisable(false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -117,12 +141,10 @@ public class CustomerFormController {
     private void setCustomerFields(Object newValue) {
         ObservableList obList2 = FXCollections.observableArrayList();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("select * from safary where type=?");
-            pstm.setString(1, String.valueOf(newValue));
-            ResultSet resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                obList2.add(new String(resultSet.getString(1)));
+            ArrayList<SafaryDTO> safaryDTOS = Safary.searchAllSafary(String.valueOf(newValue));
+
+            for (SafaryDTO x:safaryDTOS) {
+                obList2.add(x.getSafaryId());
             }
             cmbSafaryid.setItems(obList2);
         } catch (SQLException | ClassNotFoundException e) {
@@ -182,48 +204,47 @@ public class CustomerFormController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
-        String Id = txtCusId.getText();
-        String name = txtCusName.getText();
-        String address = txtCusAddress.getText();
-        String dob = String.valueOf(txtDob.getValue());
-        String nic = txtCusNic.getText();
-        String contact = txtContact.getText();
-        String gender;
-        String safaryId = String.valueOf(cmbSafaryid.getValue());
-        String safaryType = String.valueOf(cmbSafaryType.getValue());
+    void btnSaveOnAction() {
+                String Id = txtCusId.getText();
+                String name = txtCusName.getText();
+                String address = txtCusAddress.getText();
+                String dob = String.valueOf(txtDob.getValue());
+                String nic = txtCusNic.getText();
+                String contact = txtContact.getText();
+                String gender;
+                String safaryId = String.valueOf(cmbSafaryid.getValue());
+                String safaryType = String.valueOf(cmbSafaryType.getValue());
 
-        if (rbnMale.isSelected()) {
-            gender = "Male";
-        } else {
-            gender = "Femal";
-        }
-
-
-        try {
-            if (!existCustomer(Id)) {
-                Customer customer = new Customer();
-                boolean save = customer.save(new CustomerDTO(Id, name, address, dob, nic, contact, gender, safaryId, safaryType));
-                if (save) {
-                    new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Saved..!").show();
-                    LoadAllCustomer();
-                    btnClearOnAction();
+                if (rbnMale.isSelected()) {
+                    gender = "Male";
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                    gender = "Femal";
                 }
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Customer Id Already Add..!").show();
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
+                try {
+                    if (!Customer.existCustomer(Id)) {
+                        Customer customer = new Customer();
+                        boolean save = customer.save(new CustomerDTO(Id, name, address, dob, nic, contact, gender, safaryId, safaryType));
+                        if (save) {
+                            new Alert(Alert.AlertType.INFORMATION, "Customer " + Id + " Saved..!").show();
+                            LoadAllCustomer();
+                            btnClearOnAction();
+                        } else {
+                            new Alert(Alert.AlertType.ERROR, "Something Wrong..!").show();
+                        }
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Customer Id Already Add..!").show();
+                    }
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
     }
 
     @FXML
     void btnSearchOnAction() {
         String id = txtCusId.getText();
         try {
-            if (!existCustomer(id)) {
+            if (!Customer.existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, id + " Safary Not Register..!").show();
             } else {
                 Customer customer = new Customer();
@@ -242,16 +263,14 @@ public class CustomerFormController {
                 } else {
                     rbnFemale.setSelected(true);
                 }
-
                 cmbSafaryid.setValue(search.getSafaryId());
                 cmbSafaryType.setValue(search.getSafaryType());
-
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
     }
+
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
@@ -291,7 +310,7 @@ public class CustomerFormController {
     public void SearchOnKeyPress(KeyEvent keyEvent) {
         String id = txtCusId.getText();
         try {
-            if (!existCustomer(id)) {
+            if (!Customer.existCustomer(id)) {
 
             } else {
                 Customer customer = new Customer();
@@ -346,12 +365,21 @@ public class CustomerFormController {
         timeline.play();
     }
 
+    public void textFieldsKeyReleasesd(KeyEvent keyEvent) throws SQLException, ClassNotFoundException {
+        ValidationUtil.Validation(map);
+        if (keyEvent.getCode()== KeyCode.ENTER){
+            Object respond = ValidationUtil.Validation(map);
+            if (respond instanceof TextField){
+                TextField textField= (TextField) respond;
+                textField.requestFocus();
+            }else {
+                boolean exit=Customer.existCustomer(txtCusId.getText());
+                if (exit){
 
-    //----------------------existCustomer--------------------------------------------------------------
-    boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement("SELECT cusId FROM Customer WHERE cusId=?");
-        pstm.setString(1, id);
-        return pstm.executeQuery().next();
+                }else {
+                    btnSaveOnAction();
+                }
+            }
+        }
     }
 }

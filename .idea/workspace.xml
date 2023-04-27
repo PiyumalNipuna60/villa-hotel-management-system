@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0e1c3af-e07e-40aa-84a4-d6fed13bc55f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Villa-management/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Villa-management/src/AppInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/src/AppInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Villa-management/src/controller/AdminDashBoardFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/src/controller/AdminDashBoardFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Villa-management/src/controller/CustomerFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/src/controller/CustomerFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Villa-management/src/controller/DriverFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/src/controller/DriverFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Villa-management/src/controller/LoginFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Villa-management/src/controller/LoginFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,27 +16,36 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="2NgRYb1P3K1eNuQCHxhCD21ReUX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/media/piyumal/AC7EDA557EDA1842/project/GitHub-project/villa-hotel-management-system/Villa-management/src/lib/jfoenix-8.0.10.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/media/dell/AC7EDA557EDA1842/project/GitHub-project/villa-hotel-management-system",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="AppInitializer" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="AppInitializer" />
@@ -62,6 +66,7 @@
       <workItem from="1680083787944" duration="921000" />
       <workItem from="1680107421512" duration="305000" />
       <workItem from="1680194206643" duration="8000" />
+      <workItem from="1682318068571" duration="906000" />
     </task>
     <servers />
   </component>
