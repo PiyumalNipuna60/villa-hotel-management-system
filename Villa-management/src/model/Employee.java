@@ -1,116 +1,88 @@
-package model;
+package Entity;
+
+import db.DBConnection;
+import dto.EmployeeDTO;
+import tm.EmployeeTm;
+import util.CrudUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Employee {
 
-    private String empId;
-    private String name;
-    private String address;
-    private String age;
-    private String nic;
-    private String contact;
-    private String salary;
-    private String userName;
-    private String password;
-
-    public Employee() {
+    public boolean save(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
+       return CrudUtil.executeUpdate("INSERT INTO employee VALUES (?,?,?,?,?,?,?,?,?)",
+                dto.getEmpId(),
+                dto.getName(),
+                dto.getAddress(),
+                dto.getAge(),
+                dto.getNic(),
+                dto.getContact(),
+                dto.getSalary(),
+                dto.getUserName(),
+                dto.getPassword()
+                );
     }
 
-    public Employee(String empId, String name, String address, String age, String nic, String contact, String salary, String userName, String password) {
-        this.empId = empId;
-        this.name = name;
-        this.address = address;
-        this.age = age;
-        this.nic = nic;
-        this.contact = contact;
-        this.salary = salary;
-        this.userName = userName;
-        this.password = password;
+    public boolean update(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate("UPDATE employee SET name=?, address=?,age=?,nic=?,contact=?,salary=?, WHERE empId=?",
+                dto.getName(),
+                dto.getAddress(),
+                dto.getAge(),
+                dto.getNic(),
+                dto.getContact(),
+                dto.getSalary(),
+                dto.getEmpId()
+                );
     }
 
-    public String getEmpId() {
-        return empId;
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate("DELETE FROM employee WHERE empid=?", id);
     }
 
-    public void setEmpId(String empId) {
-        this.empId = empId;
+    public EmployeeDTO search(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.executeQuery("select*from employee where empId=?", id);
+        if (rst.next()) {
+            return new EmployeeDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4),
+                    rst.getString(5),
+                    rst.getString(6),
+                    rst.getString(7),
+                    rst.getString(8),
+                    rst.getString(9)
+            );
+        }
+        return null;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<EmployeeTm> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<EmployeeTm> all = new ArrayList<>();
+        ResultSet rst = CrudUtil.executeQuery("select*from employee");
+        while (rst.next()) {
+            all.add(new EmployeeTm(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4),
+                    rst.getString(5),
+                    rst.getString(6),
+                    rst.getString(7)
+            ));
+        }
+        return all;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getNic() {
-        return nic;
-    }
-
-    public void setNic(String nic) {
-        this.nic = nic;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getSalary() {
-        return salary;
-    }
-
-    public void setSalary(String salary) {
-        this.salary = salary;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "empId='" + empId + '\'' +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", age='" + age + '\'' +
-                ", nic='" + nic + '\'' +
-                ", contact='" + contact + '\'' +
-                ", salary='" + salary + '\'' +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    //----------------------existCustomer--------------------------------------------------------------
+    public static boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT empId FROM employee WHERE empId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
     }
 }

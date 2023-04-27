@@ -1,4 +1,4 @@
-package model;
+package Entity;
 
 public class CustomerDetails {
 

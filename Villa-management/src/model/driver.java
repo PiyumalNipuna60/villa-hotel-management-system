@@ -1,60 +1,79 @@
-package model;
+package Entity;
+
+import db.DBConnection;
+import dto.DriverDTO;
+import tm.driverTm;
+import util.CrudUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class driver {
-    private String driverId;
-    private String driverName;
-    private String address;
-    private String contact;
-
-    public driver() {
+    public boolean save(DriverDTO dto) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate("INSERT INTO driver VALUES (?,?,?,?)",
+                dto.getDriverId(),
+                dto.getDriverName(),
+                dto.getAddress(),
+                dto.getContact()
+        );
     }
 
-    public driver(String driverId, String driverName, String address, String contact) {
-        this.driverId = driverId;
-        this.driverName = driverName;
-        this.address = address;
-        this.contact = contact;
+    public boolean update(DriverDTO dto) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate("UPDATE driver SET driverName=?, address=?,contact=? WHERE driverId=?",
+                dto.getDriverName(),
+                dto.getAddress(),
+                dto.getContact(),
+                dto.getDriverId()
+        );
     }
 
-    public String getDriverId() {
-        return driverId;
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return CrudUtil.executeUpdate("DELETE FROM driver WHERE driverId=?",id);
     }
 
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public static DriverDTO search(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rst = CrudUtil.executeQuery("select*from driver where driverId=?", id);
+        if (rst.next()) {
+            return new DriverDTO(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4)
+            );
+        }
+        return null;
     }
 
-    public String getDriverName() {
-        return driverName;
+    public static ArrayList<driverTm> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<driverTm> all = new ArrayList<>();
+        ResultSet rst = CrudUtil.executeQuery("select*from driver");
+        while (rst.next()) {
+            all.add(new driverTm(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getString(4)));
+        }
+        return all;
     }
 
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    public int getCount() throws SQLException, ClassNotFoundException {
+        int count=0;
+        ResultSet rst = CrudUtil.executeQuery("SELECT * FROM driver");
+        while (rst.next()){
+            count++;
+        }
+        return count;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    @Override
-    public String toString() {
-        return "driver{" +
-                "driverId='" + driverId + '\'' +
-                ", driverName='" + driverName + '\'' +
-                ", address='" + address + '\'' +
-                ", contact='" + contact + '\'' +
-                '}';
+    //----------------------existCustomer--------------------------------------------------------------
+    public static boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT driverId FROM driver WHERE driverId=?");
+        pstm.setString(1, id);
+        return pstm.executeQuery().next();
     }
 }

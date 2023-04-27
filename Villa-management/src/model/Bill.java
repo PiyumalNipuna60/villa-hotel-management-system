@@ -1,4 +1,4 @@
-package model;
+package Entity;
 
 import dto.BillDTO;
 import dto.BookingRoomDTO;
@@ -11,12 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Bill {
-    public boolean save(BillDTO dto) throws SQLException, ClassNotFoundException {
+    public static CusRoomDetail searchCust(String id) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT c.name, c.contact, r.roomId, r.type ,r.price FROM customer c JOIN roomdetails rd on c.cusId = rd.cusId JOIN room r on rd.roomId = r.roomId WHERE c.cusId=?";
+        ResultSet resultSet = CrudUtil.executeQuery(sql,id);
+        CusRoomDetail cusRoomDetail = null;
+        if(resultSet.next()) {
+            cusRoomDetail = new CusRoomDetail(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),
+                    resultSet.getString(4),resultSet.getString(5));
+        }
+        return cusRoomDetail;
+
+    }
+
+    public boolean save(String cusId, String bill, String cash, String balance) throws SQLException, ClassNotFoundException {
         return CrudUtil.executeUpdate("INSERT INTO bill VALUES (?,?,?,?)",
-                dto.getCusId(),
-                dto.getBill(),
-                dto.getCash(),
-                dto.getBalance()
+                cusId,
+                bill,
+                cash,
+                balance
         );
     }
 
@@ -33,7 +45,7 @@ public class Bill {
 
     }
 
-    public ResultSet search(String id) throws SQLException, ClassNotFoundException {
+    public static ResultSet search(String id) throws SQLException, ClassNotFoundException {
         return  CrudUtil.executeQuery("SELECT customer.cusId,customer.name,customer.contact,customer.type,room.roomId,room.type,room.price,roomdetails.payment,bill.bill,bill.cash,bill.balance FROM roomdetails INNER JOIN room ON room.roomId = roomdetails.roomId INNER JOIN customer ON customer.cusId = roomdetails.cusId  INNER JOIN bill ON bill.cusId = customer.cusId where customer.cusId=?",id);
 
     }
@@ -60,4 +72,6 @@ public class Bill {
         }
         return AllBooking;
     }
+
+
 }

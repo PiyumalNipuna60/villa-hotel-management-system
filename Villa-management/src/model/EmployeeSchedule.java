@@ -1,72 +1,30 @@
-package model;
+package Entity;
+
+import dto.BookingRoomDTO;
+import dto.EmployeeDTO;
+import dto.EmployeeScheduleDTO;
+
+import java.util.ArrayList;
 
 public class EmployeeSchedule {
 
-    private String scheduleId;
-    private String time;
-    private String date;
-    private String shift;
-    private String empId;
-
-    public EmployeeSchedule() {
+    public boolean save(EmployeeScheduleDTO employeeDTO){
+        return false;
     }
 
-    public EmployeeSchedule(String scheduleId, String time, String date, String shift, String empId) {
-        this.scheduleId = scheduleId;
-        this.time = time;
-        this.date = date;
-        this.shift = shift;
-        this.empId = empId;
+    public boolean update(EmployeeScheduleDTO employeeDTO){
+        return false;
     }
 
-    public String getScheduleId() {
-        return scheduleId;
+    public boolean delete(String id){
+        return false;
     }
 
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
+    public BookingRoomDTO search(String id){
+        return null;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getShift() {
-        return shift;
-    }
-
-    public void setShift(String shift) {
-        this.shift = shift;
-    }
-
-    public String getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(String empId) {
-        this.empId = empId;
-    }
-
-    @Override
-    public String toString() {
-        return "EmployeeSchedule{" +
-                "scheduleId='" + scheduleId + '\'' +
-                ", time='" + time + '\'' +
-                ", date='" + date + '\'' +
-                ", shift='" + shift + '\'' +
-                ", empId='" + empId + '\'' +
-                '}';
+    public ArrayList<BookingRoomDTO> getAll(String id){
+        return null;
     }
 }
